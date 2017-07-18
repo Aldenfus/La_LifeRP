@@ -170,9 +170,9 @@ function tick()
     end
     if ( GetDistanceBetweenCoords(BLIP.truckReturn[1], BLIP.truckReturn[2], BLIP.truckReturn[3], truckCoords ) < 25 and not IsEntityAttached(MISSION.trailer) and MISSION.toDest) then
       distance = GetDistanceBetweenCoords(BLIP.truckReturn[1], BLIP.truckReturn[2], BLIP.truckReturn[3], currentMission[1], currentMission[2], currentMission[3], true)
-      distance = tonumber(math.floor(distance))
+      distance = tonumber(math.floor(distance/15))
       TriggerServerEvent("job:success", distance)
-      TriggerEvent("mt:missiontext", "Vous êtes arrivé. Vous avez obtenu ~g~$"..distance, 10000)
+      --TriggerEvent("mt:missiontext", "Vous êtes arrivé. Vous avez obtenu ~g~$"..distance, 10000)
       SetBlipRoute(BLIP.company, false)
       MISSION.toDest = false
       MISSION.removeMarker()
@@ -216,7 +216,7 @@ elseif trailerN == 1 then
   [4] = {10.9037, 6274.51, 31.2464, 15000},
 }
 elseif trailerN == 2 then
-  MissionData = {                      -- FRIGORIGIQUE
+  MissionData = {                      -- FRIGORIFIQUE
   [1] = {1815.92749023438,3698.14306640625,33.9835662841797, 15000},
   [2] = {-238.370208740234,6332.79248046875,32.4256858825684, 15000},
   [3] = {-654.866943359375,308.018859863281,82.8393630981445, 15000},

@@ -135,10 +135,10 @@
     </Item>
 	
 	<Item>
-      <modelName>POLICE8</modelName>
-      <txdName>POLICE8</txdName>
+      <modelName>POLICE</modelName>
+      <txdName>POLICE</txdName>
       <handlingId>POLICE3</handlingId>
-      <gameName>POLICE8</gameName>
+      <gameName>POLICE</gameName>
       <vehicleMakeName />
       <expressionDictName>null</expressionDictName>
       <expressionName>null</expressionName>

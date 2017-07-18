@@ -10,10 +10,10 @@ local DrawBlipTradeShow = true
 -- -800.0, -3002.0, 13.0
 -- -1078.0, -3002.0, 13.0
 
-local PrixRoche = 1500
-local PrixCuivre = 1500
-local PrixFer = 1500
-local PrixDiams = 1500
+local PrixRoche = 5
+local PrixCuivre = 15
+local PrixFer = 25
+local PrixDiams = 250
 local chance = 10
 local qte = 0
 local camionSortie = false
@@ -23,10 +23,10 @@ local carJob = false
 local Position = {
   Compagnie={x=978.145690917969,y=-1919.07055664063,z=31.1356315612793,distance=10},
   SpawnCamion={x=978.145690917969,y=-1919.07055664063,z=31.1356315612793,distance=10},
-  Recolet={x=2969.47827148438,y=2777.9873046875,z=38.5488739013672, distance=10},
+  Recolet={x=2969.47827148438,y=2777.9873046875,z=38.5488739013672, distance=15},
   traitement={x=2682.16967773438,y=2795.44555664063,z=40.6961441040039, distance=10},
   vente={x=1137.62316894531,y=2344.03442382813,z=54.3110084533691, distance=10},
-  venteDiams={x=-619.454223632813,y=-226.972839355469,z=38.0569648742676, distance=10},
+  venteDiams={x=-619.454223632813,y=-226.972839355469,z=38.0569648742676, distance=3},
 }
 
 local BlipMine
@@ -82,10 +82,10 @@ Citizen.CreateThread(function()
   while true do
     Citizen.Wait(0)
     if DrawMarkerShow then
-      DrawMarker(1, Position.Recolet.x, Position.Recolet.y, Position.Recolet.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 75, 0, 0, 2, 0, 0, 0, 0)
-      DrawMarker(1, Position.traitement.x, Position.traitement.y, Position.traitement.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 75, 0, 0, 2, 0, 0, 0, 0)
-      DrawMarker(1, Position.vente.x, Position.vente.y, Position.vente.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 75, 0, 0, 2, 0, 0, 0, 0)
-      DrawMarker(1, Position.venteDiams.x, Position.venteDiams.y, Position.venteDiams.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 75, 0, 0, 2, 0, 0, 0, 0)
+      --DrawMarker(1, Position.Recolet.x, Position.Recolet.y, Position.Recolet.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 75, 0, 0, 2, 0, 0, 0, 0)
+      --DrawMarker(1, Position.traitement.x, Position.traitement.y, Position.traitement.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 75, 0, 0, 2, 0, 0, 0, 0)
+      --DrawMarker(1, Position.vente.x, Position.vente.y, Position.vente.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 75, 0, 0, 2, 0, 0, 0, 0)
+      --DrawMarker(1, Position.venteDiams.x, Position.venteDiams.y, Position.venteDiams.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 75, 0, 0, 2, 0, 0, 0, 0)
       DrawMarker(1, Position.Compagnie.x, Position.Compagnie.y, Position.Compagnie.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 75, 0, 0, 2, 0, 0, 0, 0)
     end
   end
@@ -122,7 +122,7 @@ Citizen.CreateThread(function()
             TriggerServerEvent("job:getCash_s")
             Wait(200)
             if myjob == 4 then
-              if ArgentJoueur >= 3000 then
+              if ArgentJoueur >= 100 then
                 onJobLegal = 1
                 local car = GetHashKey("Tiptruck2")
                 RequestModel(car)
@@ -145,11 +145,11 @@ Citizen.CreateThread(function()
                 Wait(100)
                 Citizen.Wait(1)
                 AfficherBlip()
-                TriggerServerEvent("job:removeMoney",3000)
+                TriggerServerEvent("job:removeMoney",100)
                 ShowMsgtime.msg = "Allez à la mine et n'oubliez pas de ramener le camion pour être remboursé"
                 ShowMsgtime.time = 300
               else
-                ShowMsgtime.msg = "Vous devez fournir 3000$ de caution pour prendre le véhicule"
+                ShowMsgtime.msg = "Vous devez fournir 100$ de caution pour prendre le véhicule"
                 ShowMsgtime.time = 300
               end
             else
@@ -165,7 +165,7 @@ Citizen.CreateThread(function()
               TriggerServerEvent("poleemploi:getjobs")
               Wait(100)
 
-              TriggerServerEvent("job:addMoney",3000)
+              TriggerServerEvent("job:addMoney",100)
               mineEnding()
               ShowMsgtime.msg = "~r~ Vous avez été remboursé"
               ShowMsgtime.time = 300

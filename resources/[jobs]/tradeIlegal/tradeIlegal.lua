@@ -10,13 +10,13 @@ local DrawBlipTradeShow = true
 -- -800.0, -3002.0, 13.0
 -- -1078.0, -3002.0, 13.0
 
-local Price = 1500
+local Price = 85
 
 local Position = {
     -- VOS POINTS ICI
-    Recolet={x=0.0,y=0.0,z=0.0, distance=20, bli},
-    traitement={x=0.0,y=0.0,z=0.0, distance=20},
-    vente={x=0.0,y=0.0,z=0.0, distance=20}
+    Recolet={x=1875.8841552734,y=5056.6772460938,z=51.513126373291, distance=20},
+    traitement={x=83.502479553223,y=6650.2631835938,z=32.19792175293, distance=20},
+    vente={x=2477.1474609375,y=3763.0439453125,z=41.8897171020508, distance=20}
 }
 
 function drawTxt(text,font,centre,x,y,scale,r,g,b,a)
@@ -55,6 +55,13 @@ AddEventHandler("tradeill:cbgetQuantity", function(itemQty)
   weedcount = itemQty
 end)
 
+local weedserver = 0
+
+RegisterNetEvent("f_drogue:getweed")
+AddEventHandler("f_drogue:getweed", function(itemQty)
+  weedserver = itemQty
+end)
+
 Citizen.CreateThread(function()
     while true do
       Citizen.Wait(0)
@@ -76,9 +83,9 @@ Citizen.CreateThread(function()
     while true do
        Citizen.Wait(0)
        if DrawMarkerShow then
-          DrawMarker(1, Position.Recolet.x, Position.Recolet.y, Position.Recolet.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 75, 0, 0, 2, 0, 0, 0, 0)
-          DrawMarker(1, Position.traitement.x, Position.traitement.y, Position.traitement.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 75, 0, 0, 2, 0, 0, 0, 0)
-          DrawMarker(1, Position.vente.x, Position.vente.y, Position.vente.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 75, 0, 0, 2, 0, 0, 0, 0)
+          --DrawMarker(1, Position.Recolet.x, Position.Recolet.y, Position.Recolet.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 75, 0, 0, 2, 0, 0, 0, 0)
+          --DrawMarker(1, Position.traitement.x, Position.traitement.y, Position.traitement.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 75, 0, 0, 2, 0, 0, 0, 0)
+          --DrawMarker(1, Position.vente.x, Position.vente.y, Position.vente.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 75, 0, 0, 2, 0, 0, 0, 0)
        end
     end
 end)
@@ -97,9 +104,12 @@ Citizen.CreateThread(function()
                   -- TriggerEvent("player:getQuantity", 4, function(data)
                   --     weedcount = data.count
                   -- end)
+				  TriggerServerEvent('drogue:getweed')
+				  Wait(500)
                   TriggerEvent("player:getQuantity", 4)
                   Wait(100)
                   Citizen.Wait(1)
+				if weedserver > 0 then
                   if weedcount < 30 then
                           ShowMsgtime.msg = '~g~ Récolter ~b~Cannabis'
                           ShowMsgtime.time = 250
@@ -108,10 +118,15 @@ Citizen.CreateThread(function()
                           ShowMsgtime.msg = '~g~ + 1 ~b~Cannabis'
                           ShowMsgtime.time = 150
                           TriggerEvent("player:receiveItem", 4, 1)
+						  TriggerServerEvent('drogue:remweed')
                   else
                           ShowMsgtime.msg = '~r~ Inventaire plein !'
                           ShowMsgtime.time = 150
                   end
+				else
+					ShowMsgtime.msg = '~r~ Le champs est vide revenez plus tard !'
+                    ShowMsgtime.time = 150
+				end
              end
           end
         end

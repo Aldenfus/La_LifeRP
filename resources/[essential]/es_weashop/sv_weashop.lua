@@ -6,9 +6,11 @@ local cost_ratio = 100 --Ratio for withdrawing the weapons. This is price/cost_r
 RegisterServerEvent('CheckMoneyForWea')
 AddEventHandler('CheckMoneyForWea', function(weapon,price)
 	TriggerEvent('es:getPlayerFromId', source, function(user)
-		if (user) then
+	local player = user.identifier
+	MySQL.Async.fetchAll("SELECT * FROM users WHERE identifier = @username",{['@username'] = player}, function (result)
+	if (user) then
+		if (tonumber(result[1].permisArme)) == 1 then
 			if (tonumber(user.money) >= tonumber(price)) then
-				local player = user.identifier
 				local nb_weapon = 0
 				MySQL.Async.fetchAll("SELECT * FROM user_weapons WHERE identifier = @username",{['@username'] = player}, function (result)
 					if result then
@@ -23,20 +25,24 @@ AddEventHandler('CheckMoneyForWea', function(weapon,price)
 						{['@username'] = player, ['@weapon'] = weapon, ['@cost'] = (price)/cost_ratio})
 						-- Trigger some client stuff
 						TriggerClientEvent('FinishMoneyCheckForWea',source)
-						TriggerClientEvent("citizenv:notify", source, "CHAR_AMMUNATION", 1, "AMMUNATION", false, "Amuse toi bien avec ces joujous!\n")
+						TriggerClientEvent("itinerance:notif", source, "~g~Achat effectué !")
 					else
 						TriggerClientEvent('ToManyWeapons',source)
-						TriggerClientEvent("citizenv:notify", source, "CHAR_AMMUNATION", 1, "AMMUNATION", false, "Tu as atteint la limite d armes ! (max: "..max_number_weapons..")\n")
+						TriggerClientEvent("itinerance:notif", source, "~r~Tu as atteint le nombre maximum d'armes (6 maximum) !")
 					end
 				end)
 			else
 				-- Inform the player that he needs more money
-				TriggerClientEvent("citizenv:notify", source, "CHAR_AMMUNATION", 1, "AMMUNATION", false, "Reviens quand tu auras plus d'argent !\n")
+				TriggerClientEvent("itinerance:notif", source, "~r~Vous n'avez pas assez d'argent !")
 			end
 		else
-			TriggerEvent("es:desyncMsg")
+				TriggerClientEvent("itinerance:notif", source, "~r~Vous n'avez pas votre permis de port d'armes !")
 		end
+	else
+			TriggerEvent("es:desyncMsg")
+	end
 	end)
+end)
 end)
 
 RegisterServerEvent("weaponshop:playerSpawned")
@@ -85,5 +91,25 @@ AddEventHandler("weaponshop:GiveWeapons", function()
 		else
 			TriggerEvent("es:desyncMsg")
 		end
+	end)
+end)
+
+RegisterServerEvent('BuyWLicense')
+AddEventHandler('BuyWLicense', function()
+	TriggerEvent('es:getPlayerFromId', source, function(user)
+		local player = user.identifier
+		MySQL.Async.fetchAll("SELECT * FROM users WHERE identifier = @username",{['@username'] = player}, function (result)
+		if (tonumber(result[1].permisArme)) == 0 then
+			if (tonumber(user.money)) >= 20000 then
+				user:removeMoney(20000)
+				MySQL.Async.execute("UPDATE users SET `permisArme`=@value WHERE identifier = @identifier", {['@value'] = (tonumber(1)), ['@identifier'] = player})
+				TriggerClientEvent("itinerance:notif", source, "~g~Achat effectué !")
+			else
+				TriggerClientEvent("itinerance:notif", source, "~r~Vous n'avez pas assez d'argent !")
+			end
+		else
+			TriggerClientEvent("itinerance:notif", source, "~r~Tu as déjà le permis de port d'armes !")
+		end
+		end)
 	end)
 end)

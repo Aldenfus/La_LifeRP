@@ -17,16 +17,24 @@ AddEventHandler("menutel:PhoneOG", function(target, mytel)
 		VMenu.AddSep(98, tostring(mytel))
 		VMenu.AddFunc(98, "Retour", "vmenu:MainMenuOG", {}, "Retour")
 		VMenu.AddFunc(98, "Ajouter un contact", "tel:add", {}, "Valider")
-		VMenu.AddFunc(98, "Appeler la police", "tel:call", {"911"}, "Appeller")
+		VMenu.AddFunc(98, "~b~Contacter la police", "tel:call", {"911"}, "Appeller")
+		VMenu.AddFunc(98, "~r~Contacter l'ambulance", "tel:call", {"medic"}, "Appeller")
+		--VMenu.AddFunc(98, "~o~Contacter les dépanneurs", "tel:call", {"depan"}, "Appeller")
+		--VMenu.AddFunc(98, "~y~Appeller un taxi", "tel:call", {"taxi"}, "Appeller")
 		for ind, value in pairs(PHONEBOOK) do
 			VMenu.AddFunc(98, value.nom .. " " .. value.prenom .. " " .. tostring(ind), "tel:call", {ind}, "Appeler: " .. tostring(ind))
 		end
 	else
-		TriggerEvent("itinerance:notif", "~r~Utilisation impossible en conduisant")
+		TriggerEvent("itinerance:notif", "~r~Utilisation impossible en conduisant !")
 	end
 end)
 
+local plyPos = nil
 local confirmed = 0
+local policeconfirmed = 0
+local depanconfirmed = 0
+local taxiconfirmed = 0
+local medicconfirmed = 0
 local addconfirmed = 0
 local teldest = ""
 local iddest = ""
@@ -47,8 +55,21 @@ end)
 AddEventHandler("tel:call", function(target, tel, sendTo)
 	TriggerEvent("vmenu:closeMenu")
 	if tel == "911" then
-		local plyPos = GetEntityCoords(GetPlayerPed(-1), true)
-		TriggerServerEvent("call:makeCall", "police", {x=plyPos.x,y=plyPos.y,z=plyPos.z})
+		plyPos = GetEntityCoords(GetPlayerPed(-1), true)
+		DisplayOnscreenKeyboard(true, "FMMC_KEY_TIP8", "", "", "", "", "", 120)
+		policeconfirmed = 1
+	elseif tel == "depan" then
+		plyPos = GetEntityCoords(GetPlayerPed(-1), true)
+		DisplayOnscreenKeyboard(true, "FMMC_KEY_TIP8", "", "", "", "", "", 120)
+		depanconfirmed = 1
+	elseif tel == "taxi" then
+		plyPos = GetEntityCoords(GetPlayerPed(-1), true)
+		DisplayOnscreenKeyboard(true, "FMMC_KEY_TIP8", "", "", "", "", "", 120)
+		taxiconfirmed = 1
+	elseif tel == "medic" then
+		plyPos = GetEntityCoords(GetPlayerPed(-1), true)
+		DisplayOnscreenKeyboard(true, "FMMC_KEY_TIP8", "", "", "", "", "", 120)
+		medicconfirmed = 1
 	else
 		DisplayOnscreenKeyboard(true, "FMMC_KEY_TIP8", "", "", "", "", "", 120)
 		teldest = tel
@@ -69,7 +90,7 @@ Citizen.CreateThread(function()
 					msg = txt
 					confirmed = 2
 				else
-					TriggerEvent("itinerance:notif", "~r~ Votre message est vide")
+					TriggerEvent("itinerance:notif", "~r~Votre message est vide.")
 					confirmed = 0
 				end
 			elseif UpdateOnscreenKeyboard() == 2 then
@@ -86,16 +107,123 @@ end)
 Citizen.CreateThread(function()
 	while true do
 		Wait(0)
+		if policeconfirmed == 1 then
+			if UpdateOnscreenKeyboard() == 3 then
+				policeconfirmed = 0
+			elseif UpdateOnscreenKeyboard() == 1 then
+				local txtpolice = GetOnscreenKeyboardResult()
+				if string.len(txtpolice) > 0 then
+					msgpolice = txtpolice
+					policeconfirmed = 2
+				else
+					TriggerEvent("itinerance:notif", "~r~Votre message est vide.")
+					policeconfirmed = 0
+				end
+			elseif UpdateOnscreenKeyboard() == 2 then
+				policeconfirmed = 0
+			end
+		end
+		if policeconfirmed == 2 then
+			local plyPos = GetEntityCoords(GetPlayerPed(-1), true)
+			TriggerServerEvent("call:makeCall", "police", {x=plyPos.x,y=plyPos.y,z=plyPos.z}, msgpolice)
+			policeconfirmed = 0
+		end
+	end
+end)
+
+Citizen.CreateThread(function()
+	while true do
+		Wait(0)
+		if depanconfirmed == 1 then
+			if UpdateOnscreenKeyboard() == 3 then
+				depanconfirmed = 0
+			elseif UpdateOnscreenKeyboard() == 1 then
+				local txtdepan = GetOnscreenKeyboardResult()
+				if string.len(txtdepan) > 0 then
+					msgdepan = txtdepan
+					depanconfirmed = 2
+				else
+					TriggerEvent("itinerance:notif", "~r~Votre message est vide.")
+					depanconfirmed = 0
+				end
+			elseif UpdateOnscreenKeyboard() == 2 then
+				depanconfirmed = 0
+			end
+		end
+		if depanconfirmed == 2 then
+			TriggerServerEvent("call:makeCall", "tow", {x=plyPos.x,y=plyPos.y,z=plyPos.z}, msgdepan)
+			depanconfirmed = 0
+		end
+	end
+end)
+
+Citizen.CreateThread(function()
+	while true do
+		Wait(0)
+		if taxiconfirmed == 1 then
+			if UpdateOnscreenKeyboard() == 3 then
+				taxiconfirmed = 0
+			elseif UpdateOnscreenKeyboard() == 1 then
+				local txttaxi = GetOnscreenKeyboardResult()
+				if string.len(txttaxi) > 0 then
+					msgtaxi = txttaxi
+					taxiconfirmed = 2
+				else
+					TriggerEvent("itinerance:notif", "~r~Votre message est vide.")
+					taxiconfirmed = 0
+				end
+			elseif UpdateOnscreenKeyboard() == 2 then
+				taxiconfirmed = 0
+			end
+		end
+		if taxiconfirmed == 2 then
+			local plyPos = GetEntityCoords(GetPlayerPed(-1), true)
+			TriggerServerEvent("call:makeCall", "taxi", {x=plyPos.x,y=plyPos.y,z=plyPos.z}, msgtaxi)
+			taxiconfirmed = 0
+		end
+	end
+end)
+
+Citizen.CreateThread(function()
+	while true do
+		Wait(0)
+		if medicconfirmed == 1 then
+			if UpdateOnscreenKeyboard() == 3 then
+				medicconfirmed = 0
+			elseif UpdateOnscreenKeyboard() == 1 then
+				local txtmedic = GetOnscreenKeyboardResult()
+				if string.len(txtmedic) > 0 then
+					msgmedic = txtmedic
+					medicconfirmed = 2
+				else
+					TriggerEvent("itinerance:notif", "~r~Votre message est vide.")
+					medicconfirmed = 0
+				end
+			elseif UpdateOnscreenKeyboard() == 2 then
+				medicconfirmed = 0
+			end
+		end
+		if medicconfirmed == 2 then
+			local plyPos = GetEntityCoords(GetPlayerPed(-1), true)
+			TriggerServerEvent("call:makeCall", "medic", {x=plyPos.x,y=plyPos.y,z=plyPos.z}, msgmedic)
+			medicconfirmed = 0
+		end
+	end
+end)
+
+Citizen.CreateThread(function()
+	while true do
+		Wait(0)
 		if addconfirmed == 1 then
 			if UpdateOnscreenKeyboard() == 3 then
 				addconfirmed = 0
 			elseif UpdateOnscreenKeyboard() == 1 then
-				local txt = GetOnscreenKeyboardResult()
-				if (string.len(txt) > 0) and (string.match(txt, '%d%d%d(-)%d%d%d%d')) then -- BEAU REGEX PATTERN EN LUA PARCE QUE C'EST PAUVRE
-					telAdd = txt
+				local txtadd = GetOnscreenKeyboardResult()
+				if (string.len(txtadd) > 0) and (string.match(txtadd, '%d%d%d(-)%d%d%d%d')) then -- BEAU REGEX PATTERN EN LUA PARCE QUE C'EST PAUVRE
+					telAdd = txtadd
 					addconfirmed = 2
 				else
-					TriggerEvent("itinerance:notif", "~r~ Entrer un numéro valide")
+					TriggerEvent("itinerance:notif", "~r~Entrez un numéro valide !")
 					addconfirmed = 0
 				end
 			elseif UpdateOnscreenKeyboard() == 2 then
@@ -172,7 +300,7 @@ function DrawAdvancedText(x,y ,w,h,sc, text, r,g,b,a,font,jus)
     SetTextFont(font)
     SetTextProportional(0)
     SetTextScale(sc, sc)
-		N_0x4e096588b13ffeca(jus)
+	N_0x4e096588b13ffeca(jus)
     SetTextColour(r, g, b, a)
     SetTextDropShadow(0, 0, 0, 0,255)
     SetTextEdge(1, 0, 0, 0, 255)

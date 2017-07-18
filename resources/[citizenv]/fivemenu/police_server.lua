@@ -16,12 +16,13 @@ end)
 
 RegisterServerEvent('menupolice:verifp_s')
 AddEventHandler('menupolice:verifp_s', function(netID)
-  local tIdentifier = GetPlayerIdentifiers(netID)
-  local identifier = tIdentifier[1]
-
-  MySQL.Async.fetchAll("SELECT * FROM users WHERE identifier = @name", {['@name'] = tostring(identifier)}, function (result)
-    TriggerClientEvent("menupolice:f_verifp", source, tostring(result[1].prenom.." "..result[1].nom), tostring(result[1].money), tostring(result[1].dirtymoney), tostring(result[1].job))
-  end)
+TriggerEvent('es:getPlayerFromId', netID, function(user)
+	player = user.identifier
+	MySQL.Async.fetchAll("SELECT * FROM users WHERE identifier = @username",{['@username'] = player}, function(result)
+	local permisArme = tonumber(result[1].permisArme)
+		TriggerClientEvent("menupolice:f_verifp", source, tostring(user.prenom.. " " ..user.nom), tostring(user.telephone), tostring(user.job), tonumber(user.police), nil, nil, tonumber(result[1].permisArme), tonumber(result[1].permisBateau), tonumber(result[1].permisPilote))
+	end)
+end)
 end)
 
 RegisterServerEvent('menupolice:seizecash_s')
@@ -34,6 +35,17 @@ AddEventHandler('menupolice:seizecash_s', function(netID)
     else
       TriggerEvent("es:desyncMsg")
     end
+  end)
+end)
+
+RegisterServerEvent('menupolice:removeparme_s')
+AddEventHandler('menupolice:removeparme_s', function(netID)
+  TriggerEvent('es:getPlayerFromId', netID, function(user)
+	local tIdentifier = GetPlayerIdentifiers(netID)
+	local identifier = tIdentifier[1]
+	MySQL.Sync.execute("UPDATE users SET permisArme=@value WHERE identifier = @identifier", {['@value'] = 0, ['@identifier'] = tostring(identifier)})
+    TriggerClientEvent("itinerance:notif", source, "~g~Action effectuée!")
+	TriggerClientEvent("itinerance:notif", netID, "~r~Votre permis de port d'armes a été saisi.")
   end)
 end)
 
@@ -109,6 +121,7 @@ end)
 
 RegisterServerEvent('menupolice:cuff_s')
 AddEventHandler('menupolice:cuff_s', function(netID)
+	print(netID)
   TriggerClientEvent("menupolice:f_cuff", netID)
   TriggerClientEvent("menupolice:wf_cuff", netID)
 end)
@@ -133,6 +146,17 @@ end)
 RegisterServerEvent('menupolice:civuncar_s')
 AddEventHandler('menupolice:civuncar_s', function(t)
   TriggerClientEvent('menupolice:f_civuncar', t)
+end)
+
+RegisterServerEvent('menupolice:seizeillegalweapons_s')
+AddEventHandler('menupolice:seizeillegalweapons_s', function(target)
+  TriggerClientEvent("menupolice:f_seizeillegalweapons", target)
+end)
+
+RegisterServerEvent('menupolice:seizeweapons_s')
+AddEventHandler('menupolice:seizeweapons_s', function(target)
+  print(target)
+  TriggerClientEvent("menupolice:f_seizeweapons", target)
 end)
 
 local jail1 = false
@@ -223,3 +247,30 @@ function stringsplit(self, delimiter)
 
   return t
 end
+
+RegisterServerEvent('menupolice:delweapon')
+AddEventHandler('menupolice:delweapon', function()
+  TriggerEvent('es:getPlayerFromId', source, function(user)
+    if (user) then
+      local player = user.identifier
+      MySQL.Async.execute("DELETE from user_weapons WHERE identifier = @username", {['@username'] = player})
+    else
+      TriggerEvent("es:desyncMsg")
+    end
+  end)
+end)
+
+RegisterServerEvent('menupolice:delillegalweapon')
+AddEventHandler('menupolice:delillegalweapon', function(gun)
+  TriggerEvent('es:getPlayerFromId', source, function(user)
+    if (user) then
+      local player = user.identifier
+      MySQL.Async.execute("DELETE from user_weapons WHERE `identifier` = @username and `weapon_model` = @gun" , {
+        ['@username'] = player,
+        ['@gun'] = gun
+    })
+    else
+      TriggerEvent("es:desyncMsg")
+    end
+  end)
+end)

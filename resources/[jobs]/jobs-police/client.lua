@@ -160,8 +160,8 @@ Citizen.CreateThread(function()
           SetNetworkIdCanMigrate(id, true)
           SetVehRadioStation(veh, "OFF")
           SetEntityInvincible(veh, false)
-          SetVehicleEngineTorqueMultiplier( veh, 1.25 )
-          SetVehicleEnginePowerMultiplier( veh, 1.25 )
+          SetVehicleEngineTorqueMultiplier( veh, 2.50 )
+          SetVehicleEnginePowerMultiplier( veh, 2.50 )
           SetPedIntoVehicle(GetPlayerPed(-1),  veh,  -1)
           SetEntityAsMissionEntity(veh, true, true)
           TriggerEvent("wrapper:vehPersist", veh)
@@ -335,11 +335,12 @@ AddEventHandler('jobspolice:cadet', function()
   SetPedPropIndex(GetPlayerPed(-1), 2, 2, 0, 1)--Oreillete
   SetPedPropIndex(GetPlayerPed(-1), 6, 3, 0, 1)--Montre
   SetPedPropIndex(GetPlayerPed(-1), 1, 7, 0, 1)--Lunette
-  SetPedComponentVariation(GetPlayerPed(-1), 8, 59, 0, 0)--GiletJaune
+  SetPedComponentVariation(GetPlayerPed(-1), 8, 59,  0, 0) --Gilet Jaune
+  SetPedComponentVariation(GetPlayerPed(-1), 10, 8, 4, 0)--Grade 
 end)
 
-RegisterNetEvent("jobspolice:brigadier")
-AddEventHandler('jobspolice:brigadier', function()
+RegisterNetEvent("jobspolice:officier")
+AddEventHandler('jobspolice:officier', function()
   SetPedComponentVariation(GetPlayerPed(-1), 3, 30, 0, 0)--Gants
   SetPedComponentVariation(GetPlayerPed(-1), 4, 35, 0, 0)--Jean
   SetPedComponentVariation(GetPlayerPed(-1), 6, 24, 0, 0)--Chaussure
@@ -359,7 +360,7 @@ AddEventHandler('jobspolice:sergent', function()
   SetPedPropIndex(GetPlayerPed(-1), 2, 2, 0, 1)--Oreillete
   SetPedPropIndex(GetPlayerPed(-1), 6, 3, 0, 1)--Montre
   SetPedPropIndex(GetPlayerPed(-1), 1, 7, 0, 1)--Lunette
-  SetPedComponentVariation(GetPlayerPed(-1), 10, 8, 2, 0)--Grade
+  SetPedComponentVariation(GetPlayerPed(-1), 10, 8, 1, 0)--Grade
 end)
 RegisterNetEvent("jobspolice:lieutenant")
 AddEventHandler('jobspolice:lieutenant', function()
@@ -371,7 +372,7 @@ AddEventHandler('jobspolice:lieutenant', function()
   SetPedPropIndex(GetPlayerPed(-1), 2, 2, 0, 1)--Oreillete
   SetPedPropIndex(GetPlayerPed(-1), 6, 3, 0, 1)--Montre
   SetPedPropIndex(GetPlayerPed(-1), 1, 7, 0, 1)--Lunette
-  SetPedComponentVariation(GetPlayerPed(-1), 10, 8, 2, 0)--Grade
+  SetPedComponentVariation(GetPlayerPed(-1), 10, 8, 3, 0)--Grade
 end)
 RegisterNetEvent("jobspolice:capitaine")
 AddEventHandler('jobspolice:capitaine', function()
@@ -383,7 +384,7 @@ AddEventHandler('jobspolice:capitaine', function()
   SetPedPropIndex(GetPlayerPed(-1), 2, 2, 0, 1)--Oreillete
   SetPedPropIndex(GetPlayerPed(-1), 6, 3, 0, 1)--Montre
   SetPedPropIndex(GetPlayerPed(-1), 1, 7, 0, 1)--Lunette
-  SetPedComponentVariation(GetPlayerPed(-1), 10, 8, 2, 0)--Grade
+  SetPedComponentVariation(GetPlayerPed(-1), 10, 8, 2, 0)--Grade 
 end)
 RegisterNetEvent("jobspolice:commandant")
 AddEventHandler('jobspolice:commandant', function()
@@ -395,6 +396,6 @@ AddEventHandler('jobspolice:commandant', function()
   SetPedPropIndex(GetPlayerPed(-1), 2, 2, 0, 1)--Oreillete
   SetPedPropIndex(GetPlayerPed(-1), 6, 3, 0, 1)--Montre
   SetPedPropIndex(GetPlayerPed(-1), 1, 7, 0, 1)--Lunette
-  SetPedComponentVariation(GetPlayerPed(-1), 10, 8, 2, 0)--Grade
+  SetPedComponentVariation(GetPlayerPed(-1), 10, 8, 2, 0)--Grade 
   SetPedComponentVariation(GetPlayerPed(-1), 9, 10, 1, 2)--Gilet
 end)

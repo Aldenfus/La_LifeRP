@@ -96,8 +96,8 @@ Citizen.CreateThread(function()
 			Wait(100)
 			if myjob == 3 then
 					if onJobLegal == 0 then
-						if ArgentJoueur >= 3000 then
-							TriggerServerEvent("job:removeMoney",3000)
+						if ArgentJoueur >= 100 then
+							TriggerServerEvent("job:removeMoney",100)
 							ShowMsgtime.msg = "N'oubliez pas de ramener le camion pour être remboursé"
 							ShowMsgtime.time = 300
 							SetPedComponentVariation(GetPlayerPed(-1), 11, 56, 0, 0)
@@ -134,12 +134,12 @@ Citizen.CreateThread(function()
 							inrangeofbin3 = false
 							inrange3 = false
 						else
-							ShowMsgtime.msg = "Vous devez fournir 3000$ de caution pour prendre le véhicule"
+							ShowMsgtime.msg = "Vous devez fournir 100$ de caution pour prendre le véhicule"
 							ShowMsgtime.time = 300
 						end
 					elseif onJobLegal == 1 and EndingDay == false then
 						EndingDay = true
-						TriggerServerEvent("job:addMoney", 3000)
+						TriggerServerEvent("job:addMoney", 100)
 						binEnding()
 					end
 			else
@@ -321,7 +321,7 @@ Citizen.CreateThread(function()
 									TaskPlayAnim(myPed, dict, animation, 8.0, -8, -1, flags, 0, 0, 0, 0)
 									Wait(2000)
 									DrawMissionTextbin("~h~Vous avez ~g~ramassé~w~ une poubelle !", 5000)
-									TriggerServerEvent('job:success', distance)
+									TriggerServerEvent('job:success', distance/100)
 									--TriggerServerEvent('CheckPool')
 									Wait(2000)
 									bin.flag[1] = 1

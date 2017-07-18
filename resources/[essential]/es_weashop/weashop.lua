@@ -1,7 +1,7 @@
 --NOTE: Dans l attente de la suppression des armes à la mort du joueur pour activer les armes du DLC. Si vous voulez ajouter une arme, vous n'avez qu'à enlever les "--" et pour les prix "costs = 'PRIX'"
 local weashop = {
 	opened = false,
-	title = "Weapon store",
+	title = "Armurerie",
 	currentmenu = "main",
 	lastmenu = nil,
 	currentpos = nil,
@@ -21,33 +21,28 @@ local weashop = {
 			title = "CATEGORIES",
 			name = "main",
 			buttons = {
+				{title = "Permis de port d'armes (20000$)", name = "PermisArme", description = ""},
 				{title = "Armes blanches", name = "Melee", description = ""},
 				{title = "Pistolets", name = "Pistolets", description = ""},
-				{title = "Pistolets Mitrailleurs", name = "MachineGuns", description = ""},
-				{title = "Fusils à pompe", name = "Shotguns", description = ""},
-				{title = "Fusils d'assaut", name = "AssaultRifles", description = ""},
-				-- {title = "Sniper", name = "SniperRifles", description = ""},							DLC ARMES ET VEHICULES A GOGO
-				-- {title = "Heavy Weapons", name = "HeavyWeapons", description = ""},					DLC ARMES ET VEHICULES A GOGO
-				{title = "Armes de jet", name = "ThrownWeapons", description = ""},
 			}
 		},
 		["Melee"] = {
 			title = "Armes blanches",
 			name = "Melee",
 			buttons = {
-				{title = "Couteau", name = "Knife", costs = 400, description = {}, model = "WEAPON_Knife"},
-				{title = "Marteau", name = "Hammer", costs = 500, description = {}, model = "WEAPON_HAMMER"},
-				{title = "Batte", name = "Bat", costs = 750, description = {}, model = "WEAPON_Bat"},
-				{title = "Bouteille", name = "Bottle", costs = 300, description = {}, model = "WEAPON_Bottle"},
+				{title = "Couteau", name = "Knife", costs = 2000, description = {}, model = "WEAPON_Knife"},
+				{title = "Marteau", name = "Hammer", costs = 1200, description = {}, model = "WEAPON_HAMMER"},
+				{title = "Batte", name = "Bat", costs = 1000, description = {}, model = "WEAPON_Bat"},
+				--{title = "Bouteille", name = "Bottle", costs = 300, description = {}, model = "WEAPON_Bottle"},
 				{title = "Poignard", name = "Dagger", costs = 2000, description = {}, model = "WEAPON_Dagger"},
-				{title = "Hachette", name = "Hatchet", costs = 750, description = {}, model = "WEAPON_Hatchet"},
+				{title = "Hachette", name = "Hatchet", costs = 25000, description = {}, model = "WEAPON_Hatchet"},
 				{title = "Poing américain", name = "KnuckleDuster", costs = 7500, description = {}, model = "WEAPON_KNUCKLE"},
-				--{title = "Machette", name = "Machete", costs = 8900, description = {}, model = "WEAPON_Machete"},							DLC ARMES ET VEHICULES A GOGO
+				{title = "Machette", name = "Machete", costs = 30000, description = {}, model = "WEAPON_Machete"},
 				{title = "Lampe de poche", name = "Flashlight", costs = 5750, description = {}, model = "WEAPON_Flashlight"},
 				-- {title = "Poolcue", name = "Poolcue", costs = 120000, description = {}, model = "WEAPON_Poolcue"},
 				-- {title = "Wrench", name = "Wrench", costs = 120000, description = {}, model = "WEAPON_Wrench"},
 				-- {title = "Battleaxe", name = "Battleaxe", costs = 120000, description = {}, model = "WEAPON_Battleaxe"},
-				-- {title = "Pied de Biche", name = "Crowbar", costs = 30000, description = {}, model = "WEAPON_Crowbar"},
+				{title = "Pied de Biche", name = "Crowbar", costs = 12000, description = {}, model = "WEAPON_Crowbar"},
 				-- {title = "Club de Golf", name = "Golfclub", costs = 120000, description = {}, model = "WEAPON_Golfclub"},
 				-- {title = "Nightstick", name = "Nightstick", costs = 25000, description = {}, model = "WEAPON_Nightstick"},
 			}
@@ -56,79 +51,14 @@ local weashop = {
 			title = "Pistolets",
 			name = "Pistolets",
 			buttons = {
-				{title = "Pistolet", name = "Pistol", costs = 250000, description = {}, model = "WEAPON_Pistol"},
-				{title = "Pistol Cal 50", name = "Pistol50", costs = 40000, description = {}, model = "WEAPON_PISTOL50"},
+				{title = "Pistolet", name = "Pistol", costs = 35000, description = {}, model = "WEAPON_Pistol"},
+				{title = "Pistol Cal 50", name = "Pistol50", costs = 50000, description = {}, model = "WEAPON_PISTOL50"},
 				-- {title = "SNS Pistol", name = "SNSPistol", costs = 50000, description = {}, model = "WEAPON_SNSPistol"},
-				{title = "Pistolet Lourd", name = "HeavyPistol", costs = 375000, description = {}, model = "WEAPON_HeavyPistol"},
-				{title = "Pistolet Vintage", name = "VintagePistol", costs = 345000, description = {}, model = "WEAPON_VintagePistol"},
-				{title = "Revolver", name = "Revolver", costs = 19000, description = {}, model = "WEAPON_Revolver"},
+				{title = "Pistolet Lourd", name = "HeavyPistol", costs = 40000, description = {}, model = "WEAPON_HeavyPistol"},
+				{title = "Pistolet Vintage", name = "VintagePistol", costs = 37500, description = {}, model = "WEAPON_VintagePistol"},
+				{title = "Revolver", name = "Revolver", costs = 60000, description = {}, model = "WEAPON_Revolver"},
 				--{title = "Pistolet perforant", name = "APPistol", costs = 500000, description = {}, model = "WEAPON_APPistol"},			DLC ARMES ET VEHICULES A GOGO
 				{title = "Pistolet de détresse", name = "FlareGun", costs = 5750, description = {}, model = "WEAPON_FlareGun"},
-			}
-		},
-		["MachineGuns"] = {
-			title = "Fusils",
-			name = "MachineGuns",
-			buttons = {
-				{title = "Uzi", name = "MicroSMG", costs = 375000, description = {}, model = "WEAPON_MicroSMG"},
-				{title = "TEC-9", name = "MachinePistol", costs = 625000, description = {}, model = "WEAPON_MachinePistol"},
-				--{title = "MP5A3", name = "SMG", costs = 750000, description = {}, model = "WEAPON_SMG"},								DLC ARMES ET VEHICULES A GOGO
-				{title = "Magpul PDR", name = "AssaultSMG", costs = 1250000, description = {}, model = "WEAPON_AssaultSMG"},
-				{title = "MPX", name = "CombatPDW", costs = 1175000, description = {}, model = "WEAPON_CombatPDW"},
-				-- {title = "MG", name = "MG", costs = 30000, description = {}, model = "WEAPON_MG"},
-				-- {title = "Combat MG", name = "CombatMG", costs = 120000, description = {}, model = "WEAPON_CombatMG"},
-				-- {title = "Gusenberg", name = "Gusenberg", costs = 1460000, description = {}, model = "WEAPON_Gusenberg"},			DLC ARMES ET VEHICULES A GOGO
-				-- {title = "Mini SMG", name = "MiniSMG", costs = 120000, description = {}, model = "WEAPON_MiniSMG"},
-			}
-		},
-		["Shotguns"] = {
-			title = "Fusils à pompe",
-			name = "Shotguns",
-			buttons = {
-				{title = "Fusil à Pompe", name = "PumpShotgun", costs = 350000, description = {}, model = "WEAPON_PumpShotgun"},
-				{title = "Fusil à canon scié", name = "SawnoffShotgun", costs = 300000, description = {}, model = "WEAPON_SawnoffShotgun"},
-				-- {title = "Musket", name = "Musket", costs = 850000, description = {}, model = "WEAPON_Musket"},
-			}
-		},
-		["AssaultRifles"] = {
-			title = "Fusils d'assaut",
-			name = "AssaultRifles",
-			buttons = {
-				{title = "AK-47", name = "AssaultRifle", costs = 855000 , description = {}, model = "WEAPON_AssaultRifle"},
-				--{title = "M4A4", name = "CarbineRifle", costs = 1250000, description = {}, model = "WEAPON_CarbineRifle"},		DLC ARMES ET VEHICULES A GOGO
-				{title = "TAR-21", name = "AdvancedRifle", costs = 1425000 , description = {}, model = "WEAPON_AdvancedRifle"},
-				--{title = "G36C", name = "SpecialCarbine", costs = 1475000, description = {}, model = "WEAPON_SpecialCarbine"},	DLC ARMES ET VEHICULES A GOGO
-				{title = "QBZ-95", name = "BullpupRifle", costs = 1450000, description = {}, model = "WEAPON_BullpupRifle"},
-				-- {title = "FCompact Rifle", name = "CompactRifle", costs = 400000, description = {}, model = "WEAPON_CompactRifle"},
-			}
-		},
-		-- ["SniperRifles"] = {
-			-- title = "Sniper Rifles",
-			-- name = "SniperRifles",
-			-- buttons = {
-				-- {title = "Sniper Rifle", name = "SniperRifle", costs = 500000, description = {}, model = "WEAPON_SniperRifle"},				DLC ARMES ET VEHICULES A GOGO
-			-- }
-		-- },
-		-- ["HeavyWeapons"] = {
-			-- title = "Heavy Weapons",
-			-- name = "HeavyWeapons",
-			-- buttons = {
-				-- {title = "RPG", name = "RPG", costs = 800000, description = {}, model = "WEAPON_RPG"},												DLC ARMES ET VEHICULES A GOGO
-				-- {title = "Smoke-grenade Launcher", name = "GrenadeLauncherSmoke", costs = 1000000, description = {}, model = "WEAPON_GrenadeLauncherSmoke"},	DLC ARMES ET VEHICULES A GOGO
-				-- {title = "Compact Launcher", name = "CompactLauncher", costs = 1000000, description = {}, model = "WEAPON_CompactLauncher"},
-			-- }
-		-- },
-		["ThrownWeapons"] = {
-			title = "Armes de jet",
-			name = "ThrownWeapons",
-			buttons = {
-				-- {title = "Grenade", name = "Grenade", costs = 15000, description = {}, model = "WEAPON_Grenade"}, 								DLC ARMES ET VEHICULES A GOGO
-				{title = "Gas BZ", name = "BZGas", costs = 8500, description = {}, model = "WEAPON_BZGas"},
-				{title = "Molotov", name = "Molotov", costs = 12000, description = {}, model = "WEAPON_Molotov"},
-				{title = "Extincteur", name = "FireExtinguisher", costs = 3000, description = {}, model = "WEAPON_FireExtinguisher"},
-				{title = "Jerrican", name = "PetrolCan", costs = 8500, description = {}, model = "WEAPON_PetrolCan"},
-				{title = "Flare", name = "Flare", costs = 12000, description = {}, model = "WEAPON_Flare"},
-				-- {title = "Smoke Grenade", name = "SmokeGrenade", costs = 12000, description = {}, model = "WEAPON_SmokeGrenade"},				DLC ARMES ET VEHICULES A GOGO
 			}
 		},
 	}
@@ -188,7 +118,7 @@ function ShowWeashopBlips(bool)
 			SetBlipColour(blip, 0)
 			SetBlipScale(blip, 0.9)
 			BeginTextCommandSetBlipName("STRING")
-			AddTextComponentString('Ammunation')
+			AddTextComponentString('Armurerie')
 			EndTextCommandSetBlipName(blip)
 			SetBlipAsShortRange(blip,true)
 			SetBlipAsMissionCreatorBlip(blip,true)
@@ -201,7 +131,7 @@ function ShowWeashopBlips(bool)
 				for i,b in ipairs(weashop_blips) do
 					if IsPlayerWantedLevelGreater(GetPlayerIndex(),0) == false and weashop.opened == false and IsPedInAnyVehicle(LocalPed(), true) == false and  GetDistanceBetweenCoords(b.pos.entering[1],b.pos.entering[2],b.pos.entering[3],GetEntityCoords(LocalPed())) < 2 then
 						DrawMarker(1,b.pos.entering[1],b.pos.entering[2],b.pos.entering[3],0,0,0,0,0,0,2.001,2.0001,0.5001,0,155,255,200,0,0,0,0)
-						drawTxt('Appuyez sur ~g~ENTRER~s~ pour acheter ~b~des armes',0,1,0.5,0.8,0.6,255,255,255,255)
+						ShowInfoP("Appuyez sur ~INPUT_CONTEXT~ ~w~pour ~b~acheter une arme~w~.", 0)
 						currentlocation = b
 						inrange = true
 					end
@@ -218,6 +148,12 @@ function ShowWeashopBlips(bool)
 		end
 		weashop_blips = {}
 	end
+end
+
+function ShowInfoP(text, state)
+	SetTextComponentFormat("STRING")
+	AddTextComponentString(text)
+	DisplayHelpTextFromStringLabel(0, state, 0, -1)
 end
 
 function f(n)
@@ -353,9 +289,9 @@ function DoesPlayerHaveWeapon(model,button,y,selected, source)
 		local hash = GetHashKey(model)
 		--t = HAS_PED_GOT_WEAPON(source,hash,false) --Check if player already has selected weapon !!!! THIS DOES NOT WORK !!!!!
 		if t then
-			drawMenuRight("OWNED",weashop.menu.x,y,selected)
+			drawMenuRight("ACQUIS",weashop.menu.x,y,selected)
 		else
-			drawMenuRight(button.costs.." €",weashop.menu.x,y,selected)
+			drawMenuRight(button.costs.." $",weashop.menu.x,y,selected)
 		end
 end
 
@@ -363,7 +299,7 @@ local backlock = false
 Citizen.CreateThread(function()
 	while true do
 		Citizen.Wait(0)
-		if IsControlJustPressed(1,201) and IsPlayerInRangeOfweashop() then
+		if IsControlJustPressed(1,38) and IsPlayerInRangeOfweashop() then
 			if weashop.opened then
 				CloseCreator()
 			else
@@ -442,22 +378,12 @@ function ButtonSelected(button)
 	local this = weashop.currentmenu
 	local btn = button.name
 	if this == "main" then
-		if btn == "Melee" then
+		if btn == "PermisArme" then
+			BuyWeaponLicense()
+		elseif btn == "Melee" then
 			OpenMenu('Melee')
 		elseif btn == "Pistolets" then
 			OpenMenu('Pistolets')
-		elseif btn == "MachineGuns" then
-			OpenMenu('MachineGuns')
-		elseif btn == "Shotguns" then
-			OpenMenu('Shotguns')
-		elseif btn == "AssaultRifles" then
-			OpenMenu('AssaultRifles')
-		elseif btn == "SniperRifles" then
-			OpenMenu('SniperRifles')
-		elseif btn == "HeavyWeapons" then
-			OpenMenu('HeavyWeapons')
-		elseif btn == "ThrownWeapons" then
-			OpenMenu('ThrownWeapons')
 		end
 	else
 		fakeWeapon = button.model
@@ -476,6 +402,10 @@ AddEventHandler('ToManyWeapons', function()
 	boughtWeapon = false
 	CloseCreator()
 end)
+
+function BuyWeaponLicense()
+	TriggerServerEvent("BuyWLicense")
+end
 
 function OpenMenu(menu)
 	weashop.lastmenu = weashop.currentmenu

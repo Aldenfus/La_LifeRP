@@ -24,14 +24,14 @@ local lang = 'fr'
 local txt = {
   ['fr'] = {
 		['inComa'] = '~r~Vous êtes dans le coma',
-		['accident'] = 'Un accident s\'est produit',
+		['accident'] = 'Un accident s\'est produit !',
 		['murder'] = 'Tentative de meurtre',
 		['ambIsComming'] = 'Une ~b~ambulance~s~ est en route !',
 		['res'] = 'Vous avez été réanimé',
 		['ko'] = 'Vous êtes KO !',
-		['callAmb'] = 'Appuyez sur ~g~E~s~ pour appeler une ambulance',
-		['respawn'] = 'Appuyez sur ~r~X~s~ pour respawn',
-		['youCallAmb'] = 'Vous avez appelé une ~b~ambulance~s~'
+		['callAmb'] = 'Appuyez sur ~g~E~s~ pour appeler une ambulance et ~r~X~s~ pour respawn.',
+		['respawn'] = 'Appuyez sur ~g~E~s~ pour appeler une ambulance et ~b~X~s~ pour respawn.',
+		['youCallAmb'] = 'Vous avez appelé une ~b~ambulance~s~ !'
   },
 
 	['en'] = {
@@ -91,9 +91,6 @@ Citizen.CreateThread(function()
 			TriggerServerEvent("es:updateAlivePlayer", "dead")
 			Wait(200)
 
-			StartScreenEffect("DeathFailOut", 0, 0)
-			ShakeGameplayCam("DEATH_FAIL_IN_EFFECT_SHAKE", 1.0)
-
 			local scaleform = RequestScaleformMovie("MP_BIG_MESSAGE_FREEMODE")
 
 			if HasScaleformMovieLoaded(scaleform) then
@@ -104,15 +101,12 @@ Citizen.CreateThread(function()
 				AddTextComponentString(txt[lang]['inComa'])
 				EndTextComponent()
 				PopScaleformMovieFunctionVoid()
-
-		  	Citizen.Wait(500)
-
-		    while IsEntityDead(PlayerPedId()) do
-					DrawScaleformMovieFullscreen(scaleform, 255, 255, 255, 255)
-			 		Citizen.Wait(0)
+				
+			while IsEntityDead(PlayerPedId()) do
+				DrawScaleformMovieFullscreen(scaleform, 255, 255, 255, 255)
+			 	Citizen.Wait(0)
 		    end
-
-		  	StopScreenEffect("DeathFailOut")
+				
 			end
 		end
 	end
@@ -160,8 +154,8 @@ AddEventHandler('es_em:cl_resurectPlayer',
 		isRes = true
 
 		if IsEntityDead(playerPed) then
+			Citizen.Wait(8000)
 			SendNotification(txt[lang]['res'])
-
 			ResurrectPed(playerPed)
 			SetEntityHealth(playerPed, GetPedMaxHealth(playerPed)/2)
 			ClearPedTasksImmediately(playerPed)
@@ -222,7 +216,6 @@ function OnPlayerDied(playerId, reasonID, reason)
 					function(cb)
 						isDocConnected = cb
 						if isDocConnected then
-							SendNotification(txt[lang]['callAmb'])
 						end
 					end
 				)
@@ -235,7 +228,7 @@ function OnPlayerDied(playerId, reasonID, reason)
 	Citizen.CreateThread(
 		function()
 			local emergencyCalled = false
-
+			local plyPos = GetEntityCoords(GetPlayerPed(-1), true)
 			local notifReceivedAt = nil
 
 			while not isRes do
@@ -251,7 +244,7 @@ function OnPlayerDied(playerId, reasonID, reason)
 						notifReceivedAt = GetGameTimer()
 
 						SendNotification(txt[lang]['youCallAmb'])
-						TriggerServerEvent('es_em:sendEmergency', reason, GetPlayerServerId(PlayerId()), pos.x, pos.y, pos.z)
+						TriggerServerEvent("call:makeCall", "medic", {x=plyPos.x,y=plyPos.y,z=plyPos.z}, "~r~HOMME DANS LE COMA !")
 					end
 
 					emergencyCalled = true
@@ -261,7 +254,6 @@ function OnPlayerDied(playerId, reasonID, reason)
 
 
 				if (GetTimeDifference(GetGameTimer(), notifReceivedAt) > 15000) and not emergencyComes and emergencyCalled then
-					SendNotification(txt[lang]['callAmb'])
 					emergencyCalled = false
 				end
 

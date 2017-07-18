@@ -47,14 +47,45 @@ AddEventHandler("menudrogue:DrogueOG", function(target)
   VMenu.AddFunc(14 ,"Acheter des informations", "menudrogue:info",{0},"Acheter")
 end)
 
-AddEventHandler("menudrogue:info",function()
+AddEventHandler("menudrogue:info_weed",function()
   TriggerServerEvent("menudrogue:getCash_s")
+  Citizen.Trace('ICI')
   VMenu.ResetMenu(14, "", "default")
   VMenu.curItem = 1
-  VMenu.AddFunc(14,"Acheter des informations sur la coke","menudrogue:infocoke",{0},"Acheter")
-  VMenu.AddFunc(14,"Acheter des informations sur la meth","menudrogue:infometh",{0},"Acheter")
-  VMenu.AddFunc(14,"Acheter des informations sur les organes","menudrogue:infoorg",{0},"Acheter")
+  --VMenu.AddFunc(14,"Acheter des informations sur la coke","menudrogue:infocoke",{0},"Acheter")
+  --VMenu.AddFunc(14,"Acheter des informations sur la meth","menudrogue:infometh",{0},"Acheter")
+  --VMenu.AddFunc(14,"Acheter des informations sur les organes","menudrogue:infoorg",{0},"Acheter")
   VMenu.AddFunc(14,"Acheter des informations sur la weed","menudrogue:infoweed",{0},"Acheter")
+end)
+
+AddEventHandler("menudrogue:info_coke",function()
+  TriggerServerEvent("menudrogue:getCash_s")
+  VMenu.ResetMenu(20, "", "default")
+  VMenu.curItem = 1
+  VMenu.AddFunc(20,"Acheter des informations sur la coke","menudrogue:infocoke",{0},"Acheter")
+  --VMenu.AddFunc(14,"Acheter des informations sur la meth","menudrogue:infometh",{0},"Acheter")
+  --VMenu.AddFunc(14,"Acheter des informations sur les organes","menudrogue:infoorg",{0},"Acheter")
+  --VMenu.AddFunc(14,"Acheter des informations sur la weed","menudrogue:infoweed",{0},"Acheter")
+end)
+
+AddEventHandler("menudrogue:info_meth",function()
+  TriggerServerEvent("menudrogue:getCash_s")
+  VMenu.ResetMenu(21, "", "default")
+  VMenu.curItem = 1
+  --VMenu.AddFunc(14,"Acheter des informations sur la coke","menudrogue:infocoke",{0},"Acheter")
+  VMenu.AddFunc(21,"Acheter des informations sur la meth","menudrogue:infometh",{0},"Acheter")
+  --VMenu.AddFunc(14,"Acheter des informations sur les organes","menudrogue:infoorg",{0},"Acheter")
+  --VMenu.AddFunc(14,"Acheter des informations sur la weed","menudrogue:infoweed",{0},"Acheter")
+end)
+
+AddEventHandler("menudrogue:info_organe",function()
+  TriggerServerEvent("menudrogue:getCash_s")
+  VMenu.ResetMenu(22, "", "default")
+  VMenu.curItem = 1
+  --VMenu.AddFunc(14,"Acheter des informations sur la coke","menudrogue:infocoke",{0},"Acheter")
+  --VMenu.AddFunc(14,"Acheter des informations sur la meth","menudrogue:infometh",{0},"Acheter")
+  VMenu.AddFunc(22,"Acheter des informations sur les organes","menudrogue:infoorg",{0},"Acheter")
+  --VMenu.AddFunc(14,"Acheter des informations sur la weed","menudrogue:infoweed",{0},"Acheter")
 end)
 
 
@@ -62,21 +93,21 @@ end)
 
 --coke
 AddEventHandler("menudrogue:infocoke",function()
-  VMenu.ResetMenu(14, "", "default")
+  VMenu.ResetMenu(20, "", "default")
   VMenu.curItem = 1
   if cashycash >= coke[1].cost then
-    VMenu.AddFunc(14,"Acheter le champs de coke","menudrogue:coke",{0},"Acheter")
+    VMenu.AddFunc(20,"Acheter le champs de coke","menudrogue:coke",{0},"Acheter")
   end
   if cashycash >= coke[2].cost then
-    VMenu.AddFunc(14,"Acheter le traitement de coke","menudrogue:coke",{1},"Acheter")
+    VMenu.AddFunc(20,"Acheter le traitement de coke","menudrogue:coke",{1},"Acheter")
   end
   if cashycash >= coke[3].cost then
-    VMenu.AddFunc(14,"Acheter la vente de coke","menudrogue:coke",{2},"Acheter")
+    VMenu.AddFunc(20,"Acheter la vente de coke","menudrogue:coke",{2},"Acheter")
   end
   if cashycash < coke[1].cost and cashycash < coke[2].cost and cashycash < coke[3].cost then
-    VMenu.AddSep(14, "Vous n'avez pas assez d'argent")
+    VMenu.AddSep(20, "Vous n'avez pas assez d'argent")
   end
-  VMenu.AddFunc(14,"Retour","menudrogue:info",{},"Retour")
+  VMenu.AddFunc(20,"Retour","menudrogue:info_coke",{},"Retour")
 end)
 
 AddEventHandler("menudrogue:coke", function(target, id)
@@ -117,21 +148,21 @@ end)
 
 --meth
 AddEventHandler("menudrogue:infometh",function()
-  VMenu.ResetMenu(14, "Informateur", "default")
+  VMenu.ResetMenu(21, "Informateur", "default")
   VMenu.curItem = 1
   if cashycash >= meth[1].cost then
-    VMenu.AddFunc(14,"Acheter le champs de meth","menudrogue:meth",{0},"Acheter")
+    VMenu.AddFunc(21,"Acheter le champs de meth","menudrogue:meth",{0},"Acheter")
   end
   if cashycash >= meth[2].cost then
-    VMenu.AddFunc(14,"Acheter le traitement de meth","menudrogue:meth",{1},"Acheter")
+    VMenu.AddFunc(21,"Acheter le traitement de meth","menudrogue:meth",{1},"Acheter")
   end
   if cashycash >= meth[3].cost then
-    VMenu.AddFunc(14,"Acheter la vente de meth","menudrogue:meth",{2},"Acheter")
+    VMenu.AddFunc(21,"Acheter la vente de meth","menudrogue:meth",{2},"Acheter")
   end
   if cashycash < meth[1].cost and cashycash < meth[2].cost and cashycash < meth[3].cost then
-    VMenu.AddSep(14, "Vous n'avez pas assez d'argent")
+    VMenu.AddSep(21, "Vous n'avez pas assez d'argent")
   end
-  VMenu.AddFunc(14,"Retour","menudrogue:info",{},"Retour")
+  VMenu.AddFunc(21,"Retour","menudrogue:info_meth",{},"Retour")
 end)
 
 AddEventHandler("menudrogue:meth", function(target, id)
@@ -169,21 +200,21 @@ end)
 
 --organe
 AddEventHandler("menudrogue:infoorg",function()
-  VMenu.ResetMenu(14, "Informateur", "default")
+  VMenu.ResetMenu(22, "Informateur", "default")
   VMenu.curItem = 1
   if cashycash >= organe[1].cost then
-    VMenu.AddFunc(14,"Où récolter des organes","menudrogue:org",{0},"Acheter")
+    VMenu.AddFunc(22,"Où récolter des organes","menudrogue:org",{0},"Acheter")
   end
   if cashycash >= organe[2].cost then
-    VMenu.AddFunc(14,"Acheter les traitements d'organes","menudrogue:org",{1},"Acheter")
+    VMenu.AddFunc(22,"Acheter les traitements d'organes","menudrogue:org",{1},"Acheter")
   end
   if cashycash >= organe[3].cost then
-    VMenu.AddFunc(14,"Acheter la vente d'organes","menudrogue:org",{2},"Acheter")
+    VMenu.AddFunc(22,"Acheter la vente d'organes","menudrogue:org",{2},"Acheter")
   end
   if cashycash < organe[1].cost and cashycash < organe[2].cost and cashycash < organe[3].cost then
-    VMenu.AddSep(14, "Vous n'avez pas assez d'argent")
+    VMenu.AddSep(22, "Vous n'avez pas assez d'argent")
   end
-  VMenu.AddFunc(14,"Retour","menudrogue:info",{},"Retour")
+  VMenu.AddFunc(22,"Retour","menudrogue:info_organe",{},"Retour")
 end)
 
 AddEventHandler("menudrogue:org", function(target, id)
@@ -234,7 +265,7 @@ AddEventHandler("menudrogue:infoweed",function()
   if cashycash < weed[1].cost and cashycash < weed[2].cost and cashycash < weed[3].cost then
     VMenu.AddSep(14, "Vous n'avez pas assez d'argent")
   end
-  VMenu.AddFunc(14,"Retour","menudrogue:info",{},"Retour")
+  VMenu.AddFunc(14,"Retour","menudrogue:info_weed",{},"Retour")
 end)
 
 AddEventHandler("menudrogue:weed", function(target, id)

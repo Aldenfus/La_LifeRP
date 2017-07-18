@@ -10,15 +10,14 @@ local DrawBlipTradeShow = true
 -- -800.0, -3002.0, 13.0
 -- -1078.0, -3002.0, 13.0
 
-local Price = 1500
-
+local Price = 185
 local Position = {
     -- VOS POINTS ICI
-    Recolet={x=0.0,y=0.0,z=0.0, distance=1},
-    traitement={x=0.0,y=0.0,z=0.0, distance=1},
-    traitement2={x=0.0,y=0.0,z=0.0, distance=1},
-    traitement3={x=0.0,y=0.0,z=0.0, distance=1},
-    vente={x=0.0,y=0.0,z=0.0, distance=10}
+    Recolet={x=334.84967041016,y=-1083.2797851563,z=29.435209274292, distance=3},
+    traitement={x=1390.51037597656,y=3609.09399414063,z=38.9419288635254, distance=1},
+    traitement2={x=1389.52404785156,y=3604.15209960938,z=38.9419288635254, distance=1},
+    traitement3={x=1394.45300292969,y=3601.97973632813,z=38.94189453125, distance=1},
+    vente={x=1443.0411376953,y=6333.455078125,z=23.868028640747, distance=3},
 }
 
 function drawTxt(text,font,centre,x,y,scale,r,g,b,a)
@@ -57,6 +56,13 @@ AddEventHandler("tradeill:cbgetQuantity", function(itemQty)
   weedcount = itemQty
 end)
 
+local methserver = 0
+
+RegisterNetEvent("f_drogue:getmeth")
+AddEventHandler("f_drogue:getmeth", function(itemQty)
+  methserver = itemQty
+end)
+
 Citizen.CreateThread(function()
     while true do
                     Citizen.Wait(0)
@@ -80,11 +86,11 @@ Citizen.CreateThread(function()
     while true do
                     Citizen.Wait(0)
        if DrawMarkerShow then
-          DrawMarker(1, Position.Recolet.x, Position.Recolet.y, Position.Recolet.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 75, 0, 0, 2, 0, 0, 0, 0)
-          DrawMarker(1, Position.traitement.x, Position.traitement.y, Position.traitement.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0, 0, 255, 25, 0, 0, 2, 0, 0, 0, 0)
-          DrawMarker(1, Position.traitement2.x, Position.traitement2.y, Position.traitement2.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0, 0, 255, 25, 0, 0, 2, 0, 0, 0, 0)
-          DrawMarker(1, Position.traitement3.x, Position.traitement3.y, Position.traitement3.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0, 0, 255, 25, 0, 0, 2, 0, 0, 0, 0)
-          DrawMarker(1, Position.vente.x, Position.vente.y, Position.vente.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 75, 0, 0, 2, 0, 0, 0, 0)
+          --DrawMarker(1, Position.Recolet.x, Position.Recolet.y, Position.Recolet.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 75, 0, 0, 2, 0, 0, 0, 0)
+          --DrawMarker(1, Position.traitement.x, Position.traitement.y, Position.traitement.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0, 0, 255, 25, 0, 0, 2, 0, 0, 0, 0)
+          --DrawMarker(1, Position.traitement2.x, Position.traitement2.y, Position.traitement2.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0, 0, 255, 25, 0, 0, 2, 0, 0, 0, 0)
+          --DrawMarker(1, Position.traitement3.x, Position.traitement3.y, Position.traitement3.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 1.0, 0, 0, 255, 25, 0, 0, 2, 0, 0, 0, 0)
+          --DrawMarker(1, Position.vente.x, Position.vente.y, Position.vente.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 75, 0, 0, 2, 0, 0, 0, 0)
        end
     end
 end)
@@ -103,9 +109,12 @@ Citizen.CreateThread(function()
                    -- TriggerEvent("player:getQuantity", 4, function(data)
                    --     weedcount = data.count
                    -- end)
+				  TriggerServerEvent('drogue:getmeth')
+				  Wait(500)
                   TriggerEvent("player:getQuantity", 9)
                   Wait(100)
                   Citizen.Wait(1)
+				if methserver > 0 then
                   if weedcount < 30 then
                           ShowMsgtime.msg = '~g~ Prendre ~b~Ephedrine '
                           ShowMsgtime.time = 250
@@ -114,10 +123,15 @@ Citizen.CreateThread(function()
                           ShowMsgtime.msg = '~g~ + 1 ~b~Ephedrine '
                           ShowMsgtime.time = 150
                           TriggerEvent("player:receiveItem", 9, 1) --9
+						  TriggerServerEvent('drogue:remmeth')
                   else
                           ShowMsgtime.msg = '~r~ Inventaire plein !'
                           ShowMsgtime.time = 150
                   end
+				else
+					ShowMsgtime.msg = '~r~ Le champs est vide revenez plus tard !'
+                    ShowMsgtime.time = 150
+				end
              end
           end
         end

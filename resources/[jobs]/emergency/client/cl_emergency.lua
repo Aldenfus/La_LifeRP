@@ -23,18 +23,18 @@ local lang = 'fr'
 
 local txt = {
   ['fr'] = {
-		['getService'] = 'Appuyez sur ~g~E~s~ pour prendre votre service',
-		['dropService'] = 'Appuyez sur ~g~E~s~ pour terminer votre service',
-		['getAmbulance'] = 'Appuyez sur ~g~E~s~ pour obtenir un véhicule',
+		['getService'] = 'Appuyez sur ~INPUT_CONTEXT~ pour ~b~prendre votre service~w~.',
+		['dropService'] = 'Appuyez sur ~INPUT_CONTEXT~ pour ~b~terminer votre service~w~.',
+		['getAmbulance'] = 'Appuyez sur ~INPUT_CONTEXT~ pour ~b~obtenir un véhicule~w~.',
 		['callTaken'] = 'L\'appel a été pris par ~b~',
 		['emergency'] = '<b>~r~URGENCE~s~ <br><br>~b~Raison~s~: </b>',
-		['takeCall'] = '<b>Appuyez sur ~g~Y~s~ pour prendre l\'appel</b>',
+		['takeCall'] = '<b>Appuyez sur ~g~Y~s~ pour prendre l\'appel.</b>',
 		['callExpires'] = '<b>~r~URGENCE~s~ <br><br>Attention, l\'appel précèdent a expiré !</b>',
-		['gps'] = 'Un point a été placé sur votre GPS là où se trouve la victime en détresse',
-		['res'] = 'Appuyez sur ~g~E~s~ pour réanimer le joueur',
-		['notDoc'] = 'Vous n\'êtes pas ambulancier',
-		['stopService'] = 'Vous n\'êtes plus en service',
-		['startService'] = 'Début du service'
+		['gps'] = 'Un point a été placé sur votre GPS là où se trouve la victime en détresse.',
+		['res'] = 'Appuyez sur ~INPUT_CONTEXT~ pour ~b~réanimer le joueur~w~.',
+		['notDoc'] = '~r~Vous n\'êtes pas ambulancier.',
+		['stopService'] = '~g~Vous n\'êtes plus en service.',
+		['startService'] = '~g~Vous débutez votre service !'
   },
 
 	['en'] = {
@@ -113,7 +113,7 @@ Citizen.CreateThread(
 					DisplayHelpText(txt[lang]['getAmbulance'])
 
 					if (IsControlJustReleased(1, 51)) then
-						SpawnAmbulance()
+						TriggerServerEvent("es_em:getAmbulanceGarage")
 					end
 				end
 			end
@@ -201,30 +201,33 @@ AddEventHandler('es_em:cl_setJobId',
 ################################
 --]]
 
-function SpawnAmbulance()
+RegisterNetEvent('es_em:SpawnAmbulance')
+AddEventHandler('es_em:SpawnAmbulance', function(plateveh)
 	Citizen.Wait(0)
-	local myPed = GetPlayerPed(-1)
-	local player = PlayerId()
-	local vehicle = GetHashKey('ambulance')
+	local myPedn = GetPlayerPed(-1)
+	local playern = PlayerId()
+	local vehiclen = GetHashKey('ambulance')
 
-	RequestModel(vehicle)
+	RequestModel(vehiclen)
 
-	while not HasModelLoaded(vehicle) do
+	while not HasModelLoaded(vehiclen) do
 		Wait(1)
 	end
-
-	local plate = math.random(100, 900)
-	local coords = GetOffsetFromEntityInWorldCoords(GetPlayerPed(-1), 0, 5.0, 0)
-	local spawned_car = CreateVehicle(vehicle, coords, 431.436, - 996.786, 25.1887, true, false)
-
+	
+	local spawned_car = CreateVehicle(vehiclen, 328.90274047852, -1471.5634765625, 29.518379211426, 231.70222473145, true, false)
+	SetVehicleLivery(spawned_car, 1)
 	SetVehicleOnGroundProperly(spawned_car)
-	SetVehicleNumberPlateText(spawned_car, "MEDIC")
-	SetVehicleLivery(spawned_car, 2)
-	SetPedIntoVehicle(myPed, spawned_car, - 1)
-	SetModelAsNoLongerNeeded(vehicle)
+	SetVehicleHasBeenOwnedByPlayer(spawned_car, true)
+	SetVehRadioStation(spawned_car, "OFF")
+	SetEntityInvincible(spawned_car, false)
+	SetVehicleOnGroundProperly(spawned_car)
+	SetVehicleNumberPlateText(spawned_car, plateveh)
+	SetModelAsNoLongerNeeded(vehiclen)
+	SetPedIntoVehicle(myPedn, spawned_car, -1)
+	SetEntityAsMissionEntity(spawned_car, true, true)
+	drawNotification("~g~Véhicule sorti.")
 	Citizen.InvokeNative(0xB736A491E64A32CF, Citizen.PointerValueIntInitialized(spawned_car))
-end
-
+end)
 
 RegisterNetEvent('es_em:SpawnHelicoAmbulance')
 AddEventHandler('es_em:SpawnHelicoAmbulance', function(model, plateveh)
@@ -252,18 +255,11 @@ AddEventHandler('es_em:SpawnHelicoAmbulance', function(model, plateveh)
 	SetModelAsNoLongerNeeded(vehicle)
 	SetPedIntoVehicle(myPed, spawned_helico, - 1)
 	SetEntityAsMissionEntity(spawned_helico, true, true)
-	drawNotification("Hélico sorti, bonne route")
+	drawNotification("~g~Hélicoptère sorti.")
 	Citizen.InvokeNative(0xB736A491E64A32CF, Citizen.PointerValueIntInitialized(spawned_helico))
 end)
 
 function StartEmergency(x, y, z, sourcePlayerInComa)
-	BLIP_EMERGENCY = AddBlipForCoord(x, y, z)
-
-	SetBlipSprite(BLIP_EMERGENCY, 2)
-	SetNewWaypoint(x, y)
-
-	SendNotification(txt[lang]['gps'])
-
 	Citizen.CreateThread(
 		function()
 			local isRes = false
@@ -297,9 +293,12 @@ function GetService()
 	if isInService then
 		SendNotification(txt[lang]['stopService'])
 		emergencyEnding()
+		TriggerServerEvent("player:serviceOff", "medic")
 	else
+		ShowBlipsAmbulance()
 		SendNotification(txt[lang]['startService'])
 		TriggerServerEvent('es_em:sv_setService', 1)
+		TriggerServerEvent("player:serviceOn", "medic")
 	end
 
 	isInService = not isInService
@@ -325,9 +324,35 @@ end
 ################################
 --]]
 
+function ShowBlipsAmbulance()
 
+	BlipGarageAmbulance = AddBlipForCoord(326.05633544922, -1469.7686767578, 25.801725387573)
+
+	SetBlipSprite(BlipGarageAmbulance, 357)
+	SetBlipColour(BlipGarageAmbulance, 1)
+	SetBlipAsShortRange(BlipGarageAmbulance, true)
+	BeginTextCommandSetBlipName("STRING")
+	AddTextComponentString('Garage (ambulance)')
+	EndTextCommandSetBlipName(BlipGarageAmbulance)
+	
+	BlipGarageHelicoAmbulance = AddBlipForCoord(313.223, -1464.935, 46.509)
+
+	SetBlipSprite(BlipGarageHelicoAmbulance, 360)
+	SetBlipColour(BlipGarageHelicoAmbulance, 1)
+	SetBlipAsShortRange(BlipGarageHelicoAmbulance, true)
+	BeginTextCommandSetBlipName("STRING")
+	AddTextComponentString('Héliport (ambulance)')
+	EndTextCommandSetBlipName(BlipGarageHelicoAmbulance)
+	
+end
+
+function RemoveBlipsAmbulance()
+	RemoveBlip(BlipGarageAmbulance)
+	RemoveBlip(BlipGarageHelicoAmbulance)
+end
 
 function emergencyEnding()
+	RemoveBlipsAmbulance()
 	TriggerServerEvent("vmenu:lastChar")
 	TriggerServerEvent('es_em:sv_setService', 0)
 end

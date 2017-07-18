@@ -1,6 +1,7 @@
 ITEMS = {}
 
 local MoneyOk = false
+local giveItemConfirmed = false
 
 function DrawNotif(text)
 	SetNotificationTextEntry("STRING")
@@ -24,6 +25,10 @@ function delete(arg)
 	local item = ITEMS[itemId]
 	item.quantity = item.quantity - qty
 	TriggerServerEvent("inventory:updateQuantity_sf", item.quantity, itemId)
+	if giveItemConfirmed == true then
+		TriggerEvent("vmenu:MainMenuOG", source)
+	end
+	giveItemConfirmed = false
 	--TriggerServerEvent("inventory:getItems_s")
 end
 
@@ -85,6 +90,16 @@ AddEventHandler("inventory:sell", function(target, qty, id, price, name) -- targ
 	end
 end)
 
+AddEventHandler("inventory:menuItem", function(target, id, name, quantity)
+  VMenu.item_menu = true
+  VMenu.ResetMenu(98, "", "default")
+  Wait(100)
+  VMenu.AddFunc(98, "Retour", "vmenu:MainMenuOG", {}, "Retour")
+  VMenu.AddFunc(98, "Utiliser", "inventory:useItem", {id}, lang.common.access)
+  VMenu.AddFunc(98, "Donner", "inventory:giveItem", {id, name, quantity}, lang.common.access)
+  VMenu.AddFunc(98, "~r~Jeter", "inventory:dropItem", {id, name, quantity}, lang.common.access)
+end)
+
 AddEventHandler("inventory:useItem", function(target, id) -- target = Dernier joueur à avoir parlé, pas besoin ici. Mais obligatoire !
 	local useItem = {}
 	local value = 0
@@ -109,6 +124,7 @@ AddEventHandler("inventory:useItem", function(target, id) -- target = Dernier jo
 			TriggerEvent("food:eat", useItem)
 		end
 	end
+	TriggerEvent("vmenu:MainMenuOG", source)
 end)
 
 --------    EVENT POUR LE GATHER DES RESSOURCES ILLÉGALES SANS PRICE
@@ -135,15 +151,27 @@ AddEventHandler("player:receiveItem", function(item, quantity)
 	if (ITEMS[item] == nil) then
 		newf(item, quantity)
 	else
-		add({ item, quantity})
+		add({item, quantity})
 	end
+end)
+
+RegisterNetEvent("inventory:refresh")
+AddEventHandler("inventory:refresh", function()	
+	giveItemConfirmed = true
+end)
+
+RegisterNetEvent("inventory:dropItem")
+AddEventHandler("inventory:dropItem", function(target, id, name, quantity)
+	TriggerEvent("player:looseItem", id, 1)
+	TriggerEvent("itinerance:notif", "Vous avez jeté~r~ 1 " ..name.. "~w~.")
+	giveItemConfirmed = true
 end)
 
 RegisterNetEvent("player:looseItem")
 AddEventHandler("player:looseItem", function(item, quantity)
 	item = tonumber(item)
 	if (ITEMS[item].quantity >= quantity) then
-		delete({ item, quantity })
+		delete({ item, quantity})
 	end
 end)
 
@@ -157,6 +185,11 @@ end)
 AddEventHandler("item:reset", function()
 	ITEMS = {}
 	TriggerServerEvent("inventory:reset_s")
+end)
+
+RegisterNetEvent("inventory:giveItem_f")
+AddEventHandler("inventory:giveItem_f", function(item, quantity)
+	TriggerEvent("player:receiveItem", item, quantity)
 end)
 
 --------- EVENT FROM SERVER NO TARGET

@@ -63,7 +63,7 @@ function ArmeSelonGrade(id_police) --Donne certaine Arme en fonction du grade de
 		TriggerClientEvent("jobspolice:cadet", source , nil)
 	elseif id_police == 2 then
 		TriggerClientEvent("jobspolice:giveWeapon", source, "WEAPON_STUNGUN", nil)
-		TriggerClientEvent("jobspolice:brigadier", source, nil)
+		TriggerClientEvent("jobspolice:officier", source, nil)
 	elseif id_police == 3 then
 		TriggerClientEvent("jobspolice:giveWeapon", source, "WEAPON_STUNGUN", nil)
 		TriggerClientEvent("jobspolice:sergent", source , nil)

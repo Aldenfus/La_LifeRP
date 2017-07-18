@@ -9,7 +9,7 @@ local vehicle
 local vehicleSorti = false
 local Blip_tombe
 local tombe = 1
-local Price = 1500
+local Price = 40
 -- -900.0, -3002.0, 13.0
 -- -800.0, -3002.0, 13.0
 -- -1078.0, -3002.0, 13.0
@@ -90,7 +90,7 @@ local organe = {
   [1] = {["name"] = "Récolte d'organes",["x"] = 257.384490966797, ["y"] = -1344.62365722656, ["z"] = 24.544189453125, ["cost"] = 5000},
   [2] = {["name"] = "Emballage d'organes",["x"] = 249.921401977539, ["y"] = -1347.94091796875, ["z"] = 24.537805557251, ["cost"] = 5000},
   [3] = {["name"] = "Identification d'organes",["x"] = 249.739166259766, ["y"] = -1374.78088378906, ["z"] = 39.5343742370605, ["cost"] = 5000},
-  [4] = {["name"] = "Vente d'organes",["x"] = -622.644104003906, ["y"] = 311.300750732422, ["z"] = 83.9290618896484, ["cost"] = 5000},
+  [4] = {["name"] = "Vente d'organes",["x"] = 325.25564575195, ["y"] = -582.67169189453, ["z"] = 43.317440032959, ["cost"] = 5000},
 }
 
 function drawTxt(text,font,centre,x,y,scale,r,g,b,a)
@@ -144,10 +144,10 @@ Citizen.CreateThread(function()
     Citizen.Wait(0)
     if DrawMarkerShow then
       DrawMarker(1, morgue[3].x,morgue[3].y, morgue[3].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 75, 0, 0, 2, 0, 0, 0, 0)
-      DrawMarker(1, organe[1].x, organe[1].y, organe[1].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 75, 0, 0, 2, 0, 0, 0, 0)
-      DrawMarker(1, organe[2].x, organe[2].y, organe[2].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 25, 0, 0, 2, 0, 0, 0, 0)
-      DrawMarker(1, organe[3].x, organe[3].y, organe[3].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 25, 0, 0, 2, 0, 0, 0, 0)
-      DrawMarker(1, organe[4].x, organe[4].y, organe[4].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 25, 0, 0, 2, 0, 0, 0, 0)
+      --DrawMarker(1, organe[1].x, organe[1].y, organe[1].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 75, 0, 0, 2, 0, 0, 0, 0)
+      --DrawMarker(1, organe[2].x, organe[2].y, organe[2].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 25, 0, 0, 2, 0, 0, 0, 0)
+      --DrawMarker(1, organe[3].x, organe[3].y, organe[3].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 25, 0, 0, 2, 0, 0, 0, 0)
+      --DrawMarker(1, organe[4].x, organe[4].y, organe[4].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 25, 0, 0, 2, 0, 0, 0, 0)
     end
   end
 end)

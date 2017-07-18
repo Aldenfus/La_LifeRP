@@ -11,6 +11,28 @@ local Keys = {
 ["NENTER"] = 201, ["N4"] = 108, ["N5"] = 60, ["N6"] = 107, ["N+"] = 96, ["N-"] = 97, ["N7"] = 117, ["N8"] = 61, ["N9"] = 118
 }
 ]]
+local arme_cadet = {
+"WEAPON_NIGHTSTICK",
+"WEAPON_PISTOL",
+"WEAPON_FlASHLIGHT",
+}
+
+local arme_patrouille = {
+"WEAPON_NIGHTSTICK",
+"WEAPON_PISTOL",
+"WEAPON_FlASHLIGHT",
+"WEAPON_CARBINERIFLE",
+"WEAPON_PUMPSHOTGUN",
+}
+
+local arme_swat = {
+"WEAPON_NIGHTSTICK",
+"WEAPON_PISTOL",
+"WEAPON_FlASHLIGHT",
+"WEAPON_SMOKEGRENADE",
+"WEAPON_SPECIALCARBINE",
+"WEAPON_PUMPSHOTGUN",
+}
 
 function DrawNotif(text)
 	SetNotificationTextEntry("STRING")
@@ -117,6 +139,8 @@ AddEventHandler("vmenu:MainMenuOG", function(target)
 	VMenu.police = false
 	VMenu.telephone = false
 	VMenu.animations = false
+	VMenu.item_menu = false
+	VMenu.medic = false
 end)
 ----------------------------------
 
@@ -259,7 +283,35 @@ AddEventHandler("vmenu:policeStateCivil", function(target, idPolice) -- target =
 end)
 
 AddEventHandler("vmenu:getArmory", function(target, idGun) -- target = Dernier joueur à avoir parlé, pas besoin ici. Mais obligatoire !
-	TriggerServerEvent('jobspolice:wepArmory', idGun)
+	Citizen.Trace('Dans les guns')
+	if idGun == 1 then
+	    for _, arme in ipairs(arme_cadet) do
+            TriggerServerEvent('jobspolice:wepArmory', arme)
+			Wait(500)
+        end
+		GiveWeaponComponentToPed(GetPlayerPed(-1), GetHashKey("WEAPON_PISTOL"), 0x359B7AAE)--Flashlight
+	end
+	if idGun == 2 then
+		for _, arme in ipairs(arme_patrouille) do
+            TriggerServerEvent('jobspolice:wepArmory', arme)
+			Wait(500)
+        end
+		GiveWeaponComponentToPed(GetPlayerPed(-1), GetHashKey("WEAPON_PISTOL"), 0x359B7AAE)--Flashlight
+		GiveWeaponComponentToPed(GetPlayerPed(-1), GetHashKey("WEAPON_PUMPSHOTGUN"), 0x7BC4CDDC)--Flashlight
+		GiveWeaponComponentToPed(GetPlayerPed(-1), GetHashKey("WEAPON_CARBINERIFLE"), 0x7BC4CDDC)
+		GiveWeaponComponentToPed(GetPlayerPed(-1), GetHashKey("WEAPON_CARBINERIFLE"), 0x9D2FBF29)--Flashlight
+	end
+	if idGun == 3 then
+		for _, arme in ipairs(arme_swat) do
+            TriggerServerEvent('jobspolice:wepArmory', arme)
+			Wait(500)
+        end
+		GiveWeaponComponentToPed(GetPlayerPed(-1), GetHashKey("WEAPON_PISTOL"), 0x359B7AAE)--Flashlight
+		GiveWeaponComponentToPed(GetPlayerPed(-1), GetHashKey("WEAPON_PUMPSHOTGUN"), 0x7BC4CDDC)--Flashlight
+		GiveWeaponComponentToPed(GetPlayerPed(-1), GetHashKey("WEAPON_SPECIALCARBINE"), 0x7BC4CDDC)--Flashlight
+		GiveWeaponComponentToPed(GetPlayerPed(-1), GetHashKey("WEAPON_SPECIALCARBINE"), 0xA0D89C42)
+		GiveWeaponComponentToPed(GetPlayerPed(-1), GetHashKey("WEAPON_SPECIALCARBINE"), 0xA73D4664)--Silencieux
+	end
 end)
 
 AddEventHandler("vmenu:getGarage", function(target, vehicule) -- target = Dernier joueur à avoir parlé, pas besoin ici. Mais obligatoire !

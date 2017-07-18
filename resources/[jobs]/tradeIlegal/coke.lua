@@ -10,15 +10,15 @@ local DrawBlipTradeShow = true
 -- -800.0, -3002.0, 13.0
 -- -1078.0, -3002.0, 13.0
 
-local Price = 1500
+local Price = 155
 
 local Position = {
   -- VOS POINTS ICI
-    Recolet={x=0.0,y=0.0,z=0.0, distance=10},
-    traitement={x=0.0,y=0.0,z=0.0, distance=10},
-    traitement2={x=0.0,y=0.0,z=0.0, distance=10},
-    vente={x=0.0,y=0.0,z=0.0, distance=10},
-    vente2={x=0.0,y=0.0,z=0.0, distance=10},
+    Recolet={x=349.97210693359,y=6474.19921875,z=29.87003326416, distance=10},
+    traitement={x=3820.8559570313,y=4442.6938476563,z=2.8098225593567, distance=10},
+    traitement2={x=-3099.4482421875,y=341.9338684082,z=14.440857887268, distance=10},
+    vente={x=-1378.0701904297,y=-622.20916748047,z=30.950565338135, distance=10},
+    vente2={x=448.2629699707,y=-176.4065246582,z=71.254043579102, distance=10},
 }
 
 function drawTxt(text,font,centre,x,y,scale,r,g,b,a)
@@ -56,6 +56,12 @@ local weedcount = 0
 AddEventHandler("tradeill:cbgetQuantity", function(itemQty)
   weedcount = itemQty
 end)
+local cokeserver = 0
+
+RegisterNetEvent("f_drogue:getcoke")
+AddEventHandler("f_drogue:getcoke", function(itemQty)
+  cokeserver = itemQty
+end)
 
 Citizen.CreateThread(function()
     while true do
@@ -80,11 +86,11 @@ Citizen.CreateThread(function()
     while true do
                     Citizen.Wait(0)
        if DrawMarkerShow then
-          DrawMarker(1, Position.Recolet.x, Position.Recolet.y, Position.Recolet.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 75, 0, 0, 2, 0, 0, 0, 0)
-          DrawMarker(1, Position.traitement.x, Position.traitement.y, Position.traitement.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 75, 0, 0, 2, 0, 0, 0, 0)
-          DrawMarker(1, Position.traitement2.x, Position.traitement2.y, Position.traitement2.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 75, 0, 0, 2, 0, 0, 0, 0)
-          DrawMarker(1, Position.vente.x, Position.vente.y, Position.vente.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 75, 0, 0, 2, 0, 0, 0, 0)
-          DrawMarker(1, Position.vente2.x, Position.vente2.y, Position.vente2.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 75, 0, 0, 2, 0, 0, 0, 0)
+          --DrawMarker(1, Position.Recolet.x, Position.Recolet.y, Position.Recolet.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 75, 0, 0, 2, 0, 0, 0, 0)
+          --DrawMarker(1, Position.traitement.x, Position.traitement.y, Position.traitement.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 75, 0, 0, 2, 0, 0, 0, 0)
+          --DrawMarker(1, Position.traitement2.x, Position.traitement2.y, Position.traitement2.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 75, 0, 0, 2, 0, 0, 0, 0)
+          --DrawMarker(1, Position.vente.x, Position.vente.y, Position.vente.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 75, 0, 0, 2, 0, 0, 0, 0)
+          --DrawMarker(1, Position.vente2.x, Position.vente2.y, Position.vente2.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 75, 0, 0, 2, 0, 0, 0, 0)
        end
     end
 end)
@@ -100,13 +106,17 @@ Citizen.CreateThread(function()
              ShowInfo('~b~Appuyer sur ~g~E~b~ pour cueillir', 0)
              if IsControlJustPressed(1, 38) then
                    weedcount = 0
+				   weedserver = 0
                    -- TriggerEvent("player:getQuantity", 4, function(data)
                    --     weedcount = data.count
                    -- end)
+                  TriggerServerEvent('drogue:getcoke')
+				  Wait(500)
                   TriggerEvent("player:getQuantity", 6)
                   Wait(100)
                   Citizen.Wait(1)
-                  if weedcount < 30 then
+                      if cokeserver > 0 then
+                        if weedcount < 30 then
                           ShowMsgtime.msg = '~g~ Cueillir ~b~Feuille de coke'
                           ShowMsgtime.time = 250
                           TriggerEvent("vmenu:anim" ,"pickup_object", "pickup_low")
@@ -114,10 +124,15 @@ Citizen.CreateThread(function()
                           ShowMsgtime.msg = '~g~ + 1 ~b~Feuille de coke'
                           ShowMsgtime.time = 150
                           TriggerEvent("player:receiveItem", 6, 1)
-                  else
+						  TriggerServerEvent('drogue:remcoke')
+                        else
                           ShowMsgtime.msg = '~r~ Inventaire plein !'
                           ShowMsgtime.time = 150
-                  end
+                        end
+                      else
+                        ShowMsgtime.msg = 'Ce champs est vide, revenez plus tard!'
+                        ShowMsgtime.time = 150
+                      end
              end
           end
         end

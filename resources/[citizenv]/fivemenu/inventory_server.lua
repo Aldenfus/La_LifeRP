@@ -26,6 +26,19 @@ AddEventHandler("inventory:getItems_s", function()
   end)
 end)
 
+RegisterServerEvent("inventory:giveItem_s")
+AddEventHandler("inventory:giveItem_s", function(netID, id, name, quantity)
+  TriggerEvent('es:getPlayerFromId', netID, function(user)
+	if (user) then
+		TriggerClientEvent("inventory:refresh", source)
+		TriggerClientEvent("player:looseItem", source, id, 1)
+		TriggerClientEvent("inventory:giveItem_f", netID, id, 1)
+		TriggerClientEvent("itinerance:notif", source, "Vous avez donné ~g~1 " ..name.. "~w~.")
+		TriggerClientEvent("itinerance:notif", netID, "Vous avez reçu ~g~1 " ..name.. "~w~.")
+	end
+  end)
+end)
+
 RegisterServerEvent("inventory:setItem_s")
 AddEventHandler("inventory:setItem_s", function(qty, item, iprice, name)
   TriggerEvent('es:getPlayerFromId', source, function(user)

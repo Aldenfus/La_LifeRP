@@ -2,6 +2,33 @@ local states = {}
 states.frozen = false
 states.frozenPos = nil
 
+RegisterNetEvent('es_admin:changeModel')
+AddEventHandler('es_admin:changeModel', function(skinName)
+
+    local myPed = GetPlayerPed(-1)
+
+    -- Create a thread.
+    Citizen.CreateThread(function()
+	
+        -- Not neccesary, but set model as variable.
+        local model = skinName
+        
+        -- Get model hash.
+	    local modelhashed = GetHashKey(model)
+    
+        -- Request the model, and wait further triggering untill fully loaded.
+	    RequestModel(modelhashed)
+	    while not HasModelLoaded(modelhashed) do 
+	    	RequestModel(modelhashed)
+	    	Citizen.Wait(0)
+	    end
+        -- Set playermodel.
+		SetPlayerModel(PlayerId(), modelhashed)
+        -- Set model no longer needed.
+		SetModelAsNoLongerNeeded(modelhashed)
+	end)
+end)
+
 RegisterNetEvent('es_admin:spawnVehicle')
 AddEventHandler('es_admin:spawnVehicle', function(v)
 	local carid = GetHashKey(v)

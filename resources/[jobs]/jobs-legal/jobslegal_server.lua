@@ -3,9 +3,9 @@ AddEventHandler('job:success', function(amount)
   -- Get the players money amount
   TriggerEvent('es:getPlayerFromId', source, function(user)
     if (user) then
-      total = math.random(100, 500);
+      total = math.random(25, 80);
       -- update player money amount
-      user:addMoney((total + tonumber(math.floor(amount)) + 0.0))
+      user:addMoney((total + tonumber(math.floor(amount/5)) + 0.0))
     else
       TriggerEvent("es:desyncMsg")
     end

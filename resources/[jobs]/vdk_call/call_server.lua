@@ -6,14 +6,16 @@ RegisterServerEvent("call:getCall")
 local inService = {
     ["police"] = {},
     ["medic"] = {},
-    ["uber"] = {},
+    ["taxi"] = {},
+	["tow"] = {},
 }
 local callActive = {
     ["police"] = {taken = false},
     ["medic"] = {taken = false},
-    ["uber"] = {taken = false},
+    ["taxi"] = {taken = false},
+	["tow"] = {taken = false},
 }
-local timing = 15000
+local timing = 60000
 
 -- Add the player to the inService table
 AddEventHandler("player:serviceOn", function(job)
@@ -31,7 +33,7 @@ AddEventHandler("player:serviceOff", function(job)
 end)
 
 -- Receive call event
-AddEventHandler("call:makeCall", function(job, pos)
+AddEventHandler("call:makeCall", function(job, pos, message)
     -- Players can't call simultanously the same service
     if callActive[job].taken then
         TriggerClientEvent("target:call:taken", callActive[job].target, 2)
@@ -42,7 +44,7 @@ AddEventHandler("call:makeCall", function(job, pos)
     callActive[job].taken = true
     -- Send notif to all players in service
     for _, player in pairs(inService[job]) do
-        TriggerClientEvent("call:callIncoming", player, job, pos)
+        TriggerClientEvent("call:callIncoming", player, job, pos, message)
     end
     -- Say to the target after 'timing' seconds that nobody will come
     SetTimeout(timing, function()

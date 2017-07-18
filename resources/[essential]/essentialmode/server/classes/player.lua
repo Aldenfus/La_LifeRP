@@ -84,6 +84,8 @@ function Player:setMoney(m)
 	end
 
 	TriggerClientEvent('es:activateMoney', self.source , self.money)
+	
+	MySQL.Async.execute("UPDATE users SET `money`=@value WHERE identifier = @identifier", {['@value'] = tonumber(newMoney), ['@identifier'] = tostring(self.identifier)})
 end
 
 -- Adds to player money (required to call this from now)
@@ -94,6 +96,8 @@ function Player:addMoney(m)
 
 	TriggerClientEvent("es:addedMoney", self.source, m)
 	TriggerClientEvent('es:activateMoney', self.source , self.money)
+	
+	MySQL.Async.execute("UPDATE users SET `money`=@value WHERE identifier = @identifier", {['@value'] = tonumber(newMoney), ['@identifier'] = tostring(self.identifier)})
 end
 
 -- Removes from player money (required to call this from now)
@@ -104,6 +108,8 @@ function Player:removeMoney(m)
 
 	TriggerClientEvent("es:removedMoney", self.source, m)
 	TriggerClientEvent('es:activateMoney', self.source , self.money)
+	
+	MySQL.Async.execute("UPDATE users SET `money`=@value WHERE identifier = @identifier", {['@value'] = tonumber(newMoney), ['@identifier'] = tostring(self.identifier)})
 end
 
 ----------- DIRTY MONEY
@@ -124,6 +130,8 @@ function Player:setDMoney(m)
 	end
 
 	TriggerClientEvent('banking:updatedBalance', self.source , self.dirtymoney)
+	
+	MySQL.Async.execute("UPDATE users SET `dirtymoney`=@value WHERE identifier = @identifier", {['@value'] = tonumber(newMoney), ['@identifier'] = tostring(self.identifier)})
 end
 
 function Player:addDMoney(m)
@@ -133,6 +141,8 @@ function Player:addDMoney(m)
 
 	TriggerClientEvent("banking:adddBalance", self.source, m)
 	TriggerClientEvent('banking:updatedBalance', self.source , self.dirtymoney)
+	
+	MySQL.Async.execute("UPDATE users SET `dirtymoney`=@value WHERE identifier = @identifier", {['@value'] = tonumber(newMoney), ['@identifier'] = tostring(self.identifier)})
 end
 
 function Player:removeDMoney(m)
@@ -142,6 +152,9 @@ function Player:removeDMoney(m)
 
 	TriggerClientEvent("banking:removedBalance", self.source, m)
 	TriggerClientEvent('banking:updatedBalance', self.source , self.dirtymoney)
+	
+	MySQL.Async.execute("UPDATE users SET `dirtymoney`=@value WHERE identifier = @identifier", {['@value'] = tonumber(newMoney), ['@identifier'] = tostring(self.identifier)})
+
 end
 
 
@@ -222,3 +235,5 @@ end
 function Player:setGender(param)
 	self.gender = param
 end
+
+--MySQL.Async.execute("UPDATE users SET `dirtymoney`=@value WHERE identifier = @identifier", {['@value'] = tonumber(newMoney), ['@identifier'] = tostring(self.identifier)})

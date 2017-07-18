@@ -2,3 +2,4 @@
 .ftpconfig
 .remote-sync.json
 /resources/[car]/
+resources/mysql-async/lib/config\.lua

@@ -1,8 +1,108 @@
 ---------------------------------------------------------------CONFIGURATION--------------------------------------------------------------
 -- Note: Refreshing the script while players are on the server will kick them for not being greenlit. I will fix this soon.
 
-local BannedList = {}
-local WhiteList = {}
+local BannedList = {
+
+ ["steam:1100001044725df"]= true}
+local WhiteList = {
+
+ ["steam:11000000dd523ff"]= true,
+ ["steam:1100001068cdef3"]= true,
+ ["steam:110000104f9c8a9"]= true,
+ ["steam:1100001036f3eb7"]= true,
+ ["steam:110000108e7da5a"]= true,
+ ["steam:11000010c391827"]= true,
+ ["steam:11000010ccb8cf7"]= true,
+ ["steam:110000110943e72"]= true,
+ ["steam:110000105791fa5"]= true,
+ ["steam:110000104cb2ae5"]= true,
+ ["steam:1100001050bea3e"]= true,
+ ["steam:110000104114ff1"]= true,
+ ["steam:11000010193f4b8"]= true,
+ ["steam:11000010785479a"]= true,
+ ["steam:1100001074c374b"]= true,
+ ["steam:11000010a75ff99"]= true,
+ ["steam:11000011a4bfa3f"]= true,
+ ["steam:11000010995e32b"]= true,
+ ["steam:110000105b04d6a"]= true,
+ ["steam:1100001000f32e9"]= true,
+ ["steam:1100001036e82f3"]= true,
+ ["steam:110000109819c03"]= true,
+ ["steam:11000010204980e"]= true,
+ ["steam:110000106a89fea"]= true,
+ ["steam:110000101f39291"]= true,
+ ["steam:110000119e465bc"]= true,
+ ["steam:110000100a84773"]= true,
+ ["steam:110000101c60750"]= true,
+ ["steam:110000103175ba0"]= true,
+ ["steam:11000011806a433"]= true,
+ ["steam:11000010ac6e014"]= true,
+ ["steam:1100001060761db"]= true,
+ ["steam:1100001037d9c50"]= true,
+ ["steam:11000010914d6b3"]= true,
+ ["steam:1100001000ac5a9"]= true,
+ ["steam:1100001043c12c8"]= true,
+ ["steam:11000010ee01daf"]= true,
+ ["steam:110000106fffce3"]= true,
+ ["steam:1100001089164ab"]= true,
+ ["steam:1100001088309a3"]= true,
+ ["steam:1100001159798ba"]= true,
+ ["steam:11000010d192097"]= true,
+ ["steam:11000010c538601"]= true,
+ ["steam:1100001014f6d0f"]= true,
+ ["steam:110000109870e4f"]= true,
+ ["steam:110000101144523"]= true,
+ ["steam:1100001037648d5"]= true,
+ ["steam:11000010b1cf832"]= true,
+ ["steam:1100001197962c7"]= true,
+ ["steam:11000010dfcbe25"]= true,
+ ["steam:11000010687fe5c"]= true,
+ ["steam:11000010444762d"]= true,
+ ["steam:11000010015438a"]= true,
+ ["steam:1100001028bccdf"]= true,
+ ["steam:1100001013fa3b8"]= true,
+ ["steam:1100001037d4b4b"]= true,
+ ["steam:11000010a766e38"]= true,
+ ["steam:1100001167e08bd"]= true,
+ ["steam:1100001048e1339"]= true,
+ ["steam:110000103ec3ae8"]= true,
+ ["steam:11000010784cec6"]= true,
+ ["steam:110000102ad3733"]= true,
+ ["steam:11000010a269de3"]= true,
+ ["steam:1100001084aeb7f"]= true,
+ ["steam:1100001027b298c"]= true,
+ ["steam:110000103b1bffe"]= true,
+ ["steam:11000010664af2a"]= true,
+ ["steam:11000010a1606ae"]= true,
+ ["steam:11000010f1a9f45"]= true,
+ ["steam:1100001136629ea"]= true,
+ ["steam:11000010ee03503"]= true,
+ ["steam:1100001086b96f7"]= true,
+ ["steam:1100001003c2b8c"]= true,
+ ["steam:11000010a6dc37e"]= true,
+ ["steam:1100001051721b1"]= true,
+ ["steam:11000010170f01b"]= true,
+ ["steam:110000108188932"]= true,
+ ["steam:1100001099b606a"]= true,
+ ["steam:110000102ad1276"]= true,
+ ["steam:11000010613f547"]= true,
+ ["steam:110000106ef77c0"]= true,
+ ["steam:1100001055da309"]= true,
+ ["steam:1100001058d9c8b"]= true,
+ ["steam:110000104384c08"]= true,
+ ["steam:11000010641e891"]= true,
+ ["steam:11000010a3786b6"]= true,
+ ["steam:11000010dd523ff"]= true,
+ ["steam:1100001089afcfc"]= true,
+ ["steam:110000104d2d027"]= true,
+ ["steam:11000010aa6c5bc"]= true,
+ ["steam:1100001128E1F22"]= true,
+ ["steam:11000010EE03503"]= true,
+ ["steam:1100001017C0924"]= true,
+ ["steam:110000102E351E5"]= true,
+ ["steam:110000103A83FDB"]= true,
+ ["steam:110000107B72515"]= true, 
+ }
 
 -- exemple pour les deux listes
 -- local WhiteList = {["steam:11100198736y74e"] = true, ["steam:111001jd84h7374h"] = true}
@@ -11,13 +111,13 @@ local WhiteList = {}
 
 local Config = {}
 
-Config.PlayerLimit = 24                -- How many playerslots your server has
+Config.PlayerLimit = 24               -- How many playerslots your server has
 
-Config.PlaceInQueueAt = 23             --[[ This determines when it will start placing players in the queue. For example, if the server has 5 people ingame, and this is set to 5, it will start placing players in queue.
+Config.PlaceInQueueAt = 24             --[[ This determines when it will start placing players in the queue. For example, if the server has 5 people ingame, and this is set to 5, it will start placing players in queue.
                                             If there were 3 people in the server and it was set to 5, it would allow 2 more people to join without going through the queue.
                                             Setting this to false will disable it and will only place players in queue when the server is full. This is useful for server restarts which will assure priority users get in.]]
 
-Config.WhiteList = false
+Config.WhiteList = true
 
 Config.Debug = true                   -- Will print debug info while players are leaving/joining/refreshing the queue
 
@@ -27,8 +127,8 @@ Config.DisconnectPriority = true       -- Enables/Disables disconnect priority f
 Config.DisconnectPriorityTime = 300    -- How long a player has priority queue after they disconnect
 Config.ConnectPriority = true          -- Enabled/Disables giving players timed priority when they join, incase they crash or something goes wrong while they are loading. Currently shares disconnect priorities time.
 
-Config.MaxWarnings = 6                 -- How many warnings they get before being punished
-Config.SpamTime = 10                   -- How many seconds until they can refresh again, You will also need to edit Config.Language.refreshwarning accordingly if you change this
+Config.MaxWarnings = 50                 -- How many warnings they get before being punished
+Config.SpamTime = 5                   -- How many seconds until they can refresh again, You will also need to edit Config.Language.refreshwarning accordingly if you change this
 
 Config.TimeToRefresh = 180             -- How many seconds they have after SpamTime to refresh their position before removed
 
@@ -38,15 +138,18 @@ Config.BlackListConsecTime = 5         -- How many seconds after a queue refresh
 Config.BlackListConsecWarnings = 4     -- How many consecutive warnings a user can get before being blacklisted
 
 Config.BlackListBan = true             -- Enables/Disables banning player for spamming while in the blacklist, will not work if Config.BlackList is disabled
-Config.BlackListSpamTime = 60          -- How many seconds after a refresh while being blacklisted is considered spam. You will need to edit blistrefreshwarning accordingly if you change this
+Config.BlackListSpamTime = 1          -- How many seconds after a refresh while being blacklisted is considered spam. You will need to edit blistrefreshwarning accordingly if you change this
 Config.BlackListBanTime = 0            -- How long they are banned from the server, this should be longer than Config.BlackListTime. 0 = until next restart
 Config.BlackListMaxWarnings = 4        -- How many warnings they get until being banned
 
-Config.Priority = {                    -- An array of steamids that have permanent priority
-    [""] = false,
-    [""] = true,
-    [""] = true,
-    [""] = true
+Config.Priority = {  				-- An array of steamids that have permanent priority
+
+	["steam:110000104cb2ae5"] = true,
+    ["steam:110000105791fa5"] = true,
+    ["steam:1100001074c374b"] = true,
+    ["steam:110000104114ff1"] = true,
+	["steam:1100001028bccdf"] = true,
+    ["steam:11000010193f4b8"] = true	
 }
 
 Config.Lang = "fr"
@@ -56,7 +159,7 @@ if Config.Lang == "fr" then
         separator = " | ",
         steamiderr = "Erreur: Impossible de récupérer votre steamID",
         refreshwindow = "Votre fenêtre de rafraîchissement est de %s à %s",
-        refreshwarning = "La protection anti-spam est de 1 minute, vous avez 3 minutes après la protection anti-spam pour rafraîchir votre position",
+        refreshwarning = "La protection anti-spam est de 30 secondes, vous avez 3 minutes après la protection anti-spam pour rafraîchir votre position",
         blistwarning = "Vous avez été ajouté à la liste noire pour les 5 prochaines minutes pour spam",
         blistrefreshwarning = "La protection anti-spam est de 1 minute, vous pouvez vérifier votre temps restant dans la queue de la liste noire après la protection anti-spam",
         blistbanwarning = "Vous avez été banni jusqu'au prochain redémarrage du serveur pour avoir spam",

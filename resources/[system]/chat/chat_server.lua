@@ -21,7 +21,7 @@ AddEventHandler('playerActivated', function()
 end)
 
 AddEventHandler('playerDropped', function(reason)
-    TriggerClientEvent('chatMessage', -1, '', { 0, 0, 0 }, '^2* ' .. GetPlayerName(source) ..' left (' .. reason .. ')')
+    --TriggerClientEvent('chatMessage', -1, '', { 0, 0, 0 }, '^2* ' .. GetPlayerName(source) ..' left (' .. reason .. ')')
 end)
 
 -- say command handler

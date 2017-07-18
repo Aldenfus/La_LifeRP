@@ -88,9 +88,11 @@ VMenu = {
 	Frigorifique_company = false,
 	Log_company = false,
 
+  item_menu = false,
 	police = false,
 	telephone = false,
 	animations = false,
+	medic = false,
 	jobs = false,
 
 	Cuffedkeys = {167, 168},
@@ -853,6 +855,10 @@ function playerSpawned()
 			Wait(20)
 		end
 	end
+	while true do
+		Wait(300000)
+		TriggerServerEvent("vmenu:sync_s")
+	end
 end
 
 AddEventHandler("playerSpawned", function()
@@ -959,15 +965,28 @@ function Construct()
 
 	local menu = 6
 	VMenu.AddMenu(menu, "", "armurerie") -- default = Header "Texte" sur fond bleu
-	VMenu.AddFunc(menu, "M4", "vmenu:getArmory", {"WEAPON_CARBINERIFLE"}, "Obtenir cette arme")
-	VMenu.AddFunc(menu, "Fusil à pompe", "vmenu:getArmory", {"WEAPON_PUMPSHOTGUN"}, "Obtenir cette arme")
-	VMenu.AddFunc(menu, "Pistolet", "vmenu:getArmory", {"WEAPON_PISTOL"}, "Obtenir cette arme")
-	VMenu.AddFunc(menu, "Matraque", "vmenu:getArmory", {"WEAPON_NIGHTSTICK"}, "Obtenir cette arme")
+	TriggerServerEvent('vmenu:updateUser', 6)
+	Wait(1000)
+	Citizen.Trace(tostring(User.police))
+	if User.police >= 1 then
+	VMenu.AddFunc(menu, "Arme de cadet",'vmenu:getArmory',{1}, "armurerie") -- default = Header "Texte" sur fond bleu
+	end
+	if User.police >= 2 then
+	VMenu.AddFunc(menu, "Arme de patrouille", "vmenu:getArmory", {2}, "Obtenir cette arme")
+	end
+	if User.police >= 4 then
+	VMenu.AddFunc(menu, "Arme d'assault", "vmenu:getArmory", {3}, "Obtenir cette arme")
+	end
+	--VMenu.AddFunc(menu, "M4", "vmenu:getArmory", {"WEAPON_CARBINERIFLE"}, "Obtenir cette arme")
+	--VMenu.AddFunc(menu, "Fusil à pompe", "vmenu:getArmory", {"WEAPON_PUMPSHOTGUN"}, "Obtenir cette arme")
+	--VMenu.AddFunc(menu, "Pistolet", "vmenu:getArmory", {"WEAPON_PISTOL"}, "Obtenir cette arme")
+	--VMenu.AddFunc(menu, "Matraque", "vmenu:getArmory", {"WEAPON_NIGHTSTICK"}, "Obtenir cette arme")
 
 	local menu = 7
 	VMenu.AddMenu(menu, "", "default") -- default = Header "Texte" sur fond bleu
 	TriggerServerEvent('vmenu:updateUser', 7)
 	Citizen.Wait(100)
+	Citizen.Trace(tostring(User.police))
 	if User.vehicle == 0 then
 		if User.enService == 1 then
 			if User.police >= 1 then
@@ -980,17 +999,17 @@ function Construct()
 				VMenu.AddFunc(menu, "Suberban Sheriff", "vmenu:getGarage", {"sheriff2"}, "Obtenir cette voiture")
 				VMenu.AddFunc(menu, "Crown Victoria Sheriff", "vmenu:getGarage", {"sheriff3"}, "Obtenir cette voiture")
 			end
-			if User.police >= 3 then
+			if User.police >= 2 then
 				VMenu.AddFunc(menu, "Charger police", "vmenu:getGarage", {"police2"}, "Obtenir cette voiture")
 			end
-			if User.police >= 4 then
+			if User.police >= 3 then
 				VMenu.AddFunc(menu, "Suberban K9", "vmenu:getGarage", {"police6"}, "Obtenir cette voiture")
 			end
-			if User.police >= 5 then
+			if User.police >= 4 then
 				VMenu.AddFunc(menu, "Taho banalisée", "vmenu:getGarage", {"fbi2"}, "Obtenir cette voiture")
 				VMenu.AddFunc(menu, "Charger banalisée", "vmenu:getGarage", {"fbi"}, "Obtenir cette voiture")
 			end
-			if User.police >= 6 then
+			if User.police >= 5 then
 				VMenu.AddFunc(menu, "Police explorer interceptor", "vmenu:getGarage", {"police3"}, "Obtenir cette voiture")
 				VMenu.AddFunc(menu, "Interceptor police 2017", "vmenu:getGarage", {"police5"}, "Obtenir cette voiture")
 			end
@@ -1048,7 +1067,7 @@ function Construct()
 
 	local menu = 14
 	VMenu.AddMenu(menu, "", "default")
-	VMenu.AddFunc(menu, "Acheter des informations", "menudrogue:info", {0}, "Acheter")
+	VMenu.AddFunc(menu, "Acheter des informations", "menudrogue:info_weed", {0}, "Acheter")
 
 	local menu = 15
 	VMenu.AddMenu(menu, "", "default")
@@ -1098,6 +1117,19 @@ function Construct()
 	else
 		VMenu.AddSep(menu, "Vous devez être en ambulancier")
 	end
+	
+	local menu = 20
+		VMenu.AddMenu(menu, "", "default")
+		VMenu.AddFunc(menu, "Acheter des informations", "menudrogue:info_coke", {0}, "Acheter")
+
+	local menu = 21
+		VMenu.AddMenu(menu, "", "default")
+		VMenu.AddFunc(menu, "Acheter des informations", "menudrogue:info_meth", {0}, "Acheter")
+
+	local menu = 22
+		VMenu.AddMenu(menu, "", "default")
+		VMenu.AddFunc(menu, "Acheter des informations", "menudrogue:info_organe", {0}, "Acheter")
+
 
 	------- MAIN MENU F7
 	local menu = 98
@@ -1123,7 +1155,7 @@ function getOutfitsMenu(id, OutfitsNo)
 end
 
 function getMainMenu()
-	if VMenu.police == false and VMenu.telephone == false and VMenu.animations == false then
+	if VMenu.police == false and VMenu.telephone == false and VMenu.animations == false and VMenu.item_menu == false and VMenu.medic == false then
 		TriggerServerEvent('vmenu:updateUser', 98)
 		TriggerServerEvent("inventory:getItems_s")
 		VMenu.ResetMenu(98, "", "default")
@@ -1134,21 +1166,31 @@ function getMainMenu()
 		if User.police > 0 then
 			VMenu.AddFunc(98, lang.menu.mainmenu.police, "menupolice:PoliceOG", {User.police}, lang.common.access)
 		end
+		
+		if User.job == 13 then
+			VMenu.AddFunc(98, "Menu ambulance", "menumedic:MedicOG", {}, lang.common.access)
+		end
 		-- 	lE MENU SELON LA JOB
 		VMenu.AddSep(98, jobsname[User.job])
-
+		
+		VMenu.AddFunc(98, "~b~Sauvegarder ma position", "vmenu:sync", {}, lang.common.access)
+		--VMenu.AddFunc(98, "Répertoire", "menutel:PhoneOG", {}, lang.common.access)
 		VMenu.AddFunc(98, lang.menu.mainmenu.anim, "menuanim:AnimOG", {}, lang.common.access)
-		VMenu.AddFunc(98, lang.menu.mainmenu.reper, "menutel:PhoneOG", {User.telephone}, lang.common.access)
 		VMenu.AddFunc(98, lang.menu.mainmenu.givecash, "vmenu:giveCash", {User.money}, lang.common.access)
 		VMenu.AddFunc(98, lang.menu.mainmenu.givedcash, "vmenu:giveDCash", {User.dirtymoney}, lang.common.access)
 		VMenu.AddSep(98, lang.menu.mainmenu.inventory)
 		for ind, value in ipairs(ITEMS) do
 			if value.quantity > 0 then
-				VMenu.AddFunc(98, tostring(value.libelle), "inventory:useItem", {ind}, lang.menu.mainmenu.quantity .. tostring(value.quantity))
+				VMenu.AddFunc(98, tostring(value.libelle), "inventory:menuItem", {ind, tostring(value.libelle), tostring(value.quantity)}, lang.menu.mainmenu.quantity .. tostring(value.quantity))
 			end
 		end
 	end
 end
+
+RegisterNetEvent("vmenu:sync")
+AddEventHandler("vmenu:sync", function()
+	TriggerServerEvent("vmenu:sync_s")
+end)
 
 function getGaragePolice()
 	TriggerServerEvent('vmenu:updateUser', 7)
@@ -1158,31 +1200,38 @@ function getGaragePolice()
 		if User.police >= 1 then
 			VMenu.AddFunc(7, "Ranger votre véhicule", "vmenu:toGarage", {}, "Il doit être devant vous")
 			VMenu.AddFunc(7, "Crown Victoria police", "vmenu:getGarage", {"police7"}, "Obtenir cette voiture")
-			VMenu.AddFunc(7, "Impala police", "vmenu:getGarage", {"police8"}, "Obtenir cette voiture")
-			VMenu.AddFunc(7, "Crown Victoria", "vmenu:getGarage", {"sheriff3"}, "Obtenir cette voiture")
+			VMenu.AddFunc(7, "VTT Scrocher", "vmenu:getGarage", {"scorcher"}, "Obtenir cette voiture")
 		end
 		if User.police >= 2 then
-			VMenu.AddFunc(7, "Taurus police", "vmenu:getGarage", {"police4"}, "Obtenir cette voiture")
-			VMenu.AddFunc(7, "Charger", "vmenu:getGarage", {"sheriff"}, "Obtenir cette voiture")
-			VMenu.AddFunc(7, "Suberban", "vmenu:getGarage", {"sheriff2"}, "Obtenir cette voiture")
+			VMenu.AddFunc(7, "Dodge Charger", "vmenu:getGarage", {"police2"}, "Obtenir cette voiture")
 		end
 		if User.police >= 3 then
-			VMenu.AddFunc(7, "Charger police", "vmenu:getGarage", {"police2"}, "Obtenir cette voiture")
+			VMenu.AddFunc(7, "Ford Explorer", "vmenu:getGarage", {"police3"}, "Obtenir cette voiture")
+			VMenu.AddFunc(7, "Chevrolet Impala", "vmenu:getGarage", {"police8"}, "Obtenir cette voiture")
 		end
 		if User.police >= 4 then
-			VMenu.AddFunc(7, "Suberban K9", "vmenu:getGarage", {"police6"}, "Obtenir cette voiture")
-		end
-		if User.police >= 5 then
-			VMenu.AddFunc(7, "Taho banalisée", "vmenu:getGarage", {"fbi2"}, "Obtenir cette voiture")
-			VMenu.AddFunc(7, "Charger banalisée", "vmenu:getGarage", {"fbi"}, "Obtenir cette voiture")
-			VMenu.AddFunc(7, "Moto", "vmenu:getGarage", {"policeb"}, "Obtenir ce véhicule")
-		end
-		if User.police >= 6 then
-			VMenu.AddFunc(7, "Police Explorer Interceptor", "vmenu:getGarage", {"police3"}, "Obtenir cette voiture")
-			VMenu.AddFunc(7, "Police Explorer", "vmenu:getGarage", {"police5"}, "Obtenir cette voiture")
+			VMenu.AddFunc(7, "4x4 banalisé", "vmenu:getGarage", {"fbi2"}, "Obtenir cette voiture")
+			VMenu.AddFunc(7, "Voiture banalisé", "vmenu:getGarage", {"fbi"}, "Obtenir cette voiture")
+			VMenu.AddFunc(7, "Ford F-150 SVT Raptor", "vmenu:getGarage", {"sherif2"}, "Obtenir ce véhicule")
 		end
 	else
 		VMenu.AddSep(7, "Vous n'êtes pas en service")
+	end
+end
+
+function getArmory()
+	TriggerServerEvent('vmenu:updateUser', 6)
+	Wait(1000)
+	Citizen.Trace(tostring(User.police))
+	VMenu.ResetMenu(6, "", "default")
+	if User.police >= 1 then
+	VMenu.AddFunc(6, "Arme de cadet",'vmenu:getArmory',{1}, "armurerie") -- default = Header "Texte" sur fond bleu
+	end
+	if User.police >= 2 then
+	VMenu.AddFunc(6, "Arme de patrouille", "vmenu:getArmory", {2}, "Obtenir cette arme")
+	end
+	if User.police >= 4 then
+	VMenu.AddFunc(6, "Arme d'assault", "vmenu:getArmory", {3}, "Obtenir cette arme")
 	end
 end
 
@@ -1202,18 +1251,11 @@ function getGarageHelicoPolice()
 	Wait(200)
 	VMenu.ResetMenu(17, "", "default")
 	if User.enService == 1 then
-		if User.police >= 1 then
-		end
-		if User.police >= 2 then
-		end
-		if User.police >= 3 then
-		end
-		if User.police >= 4 then
-			VMenu.AddFunc(17, "Helico de police", "vmenu:getHelicoGarage", {"polmav"}, "Obtenir cet hélicoptère")
-		end
-		if User.police >= 5 then
+		if User.police <= 5 then
+			VMenu.AddSep(17, "Votre grade est trop bas")
 		end
 		if User.police >= 6 then
+			VMenu.AddFunc(17, "Helico de police", "vmenu:getHelicoGarage", {"polmav"}, "Obtenir cet hélicoptère")
 		end
 	else
 		VMenu.AddSep(17, "Vous devez être en service")
@@ -1755,8 +1797,14 @@ Citizen.CreateThread(function()
 		if (IsNearPoints(LockerPolice, 4.5) == true) then
 			VMenu.lockerpolice = true
 		elseif (IsNearPoints(Armory, 2) == true) then
+		
+		elseif (IsNearPoints(informateur_weed, 3) == true) then
 
-		elseif (IsNearPoints(informateur, 3) == true) then
+		elseif (IsNearPoints(informateur_coke, 3) == true) then
+
+		elseif (IsNearPoints(informateur_meth, 3) == true) then
+
+		elseif (IsNearPoints(informateur_organe, 3) == true) then
 
 		elseif (IsNearPoints(JailPolice, 1) == true) then
 
@@ -1807,13 +1855,11 @@ Citizen.CreateThread(function()
 		--           end
 		--       end
 	else
-		local X = GetEntityForwardX(GetPlayerPed(-1))
-		local Y = GetEntityForwardY(GetPlayerPed(-1))
 		for i = 0,31 do
 			if NetworkIsPlayerConnected(i) then
 				if NetworkIsPlayerActive(i) and GetPlayerPed(i) ~= nil then
 					if GetPlayerServerId(i) ~= GetPlayerServerId(PlayerId()) then
-						if (GetDistanceBetweenCoords(GetEntityCoords(GetPlayerPed(-1)).x+X,GetEntityCoords(GetPlayerPed(-1)).y+Y,GetEntityCoords(GetPlayerPed(-1)).z, GetEntityCoords(GetPlayerPed(i)).x,GetEntityCoords(GetPlayerPed(i)).y,GetEntityCoords(GetPlayerPed(i)).z) < 0.6001) then
+						if (GetDistanceBetweenCoords(GetEntityCoords(GetPlayerPed(-1)), GetEntityCoords(GetPlayerPed(i))) < 2.5001) then
 							talkingTarget = i
 
 							break
@@ -1866,7 +1912,7 @@ Citizen.CreateThread(function()
 			TriggerEvent("vmenu:openMenu", 98)
 			VMenu.mainMenu = true
 			-- 	TriggerServerEvent("vmenu:updateUser", true)
-			if VMenu.police == false and VMenu.telephone == false and VMenu.animations == false then
+			if VMenu.police == false and VMenu.telephone == false and VMenu.animations == false and VMenu.item_menu == false and VMenu.medic == false then
 				getMainMenu()
 			end
 			Wait(100)
@@ -1881,6 +1927,7 @@ Citizen.CreateThread(function()
 				end
 			elseif (IsNearPoints(Armory, 2) == true and User.police >= 1) then
 				TriggerEvent("vmenu:openMenu", 6)
+				getArmory()
 			elseif (IsNearPoints(Garage_police, 4) == true and User.police >= 1) then
 				TriggerEvent("vmenu:openMenu", 7)
 				if VMenu.garagepolice == false then
@@ -1955,8 +2002,14 @@ Citizen.CreateThread(function()
 				TriggerEvent("vmenu:openMenu", 10)
 			elseif (IsNearPoints(Store, 4) == true) then
 				TriggerEvent("vmenu:openMenu", 11)
-			elseif (IsNearPoints(informateur, 3) == true) then
+			elseif (IsNearPoints(informateur_weed, 3) == true) then
 				TriggerEvent("vmenu:openMenu", 14)
+			elseif (IsNearPoints(informateur_coke, 3) == true) then
+				TriggerEvent("vmenu:openMenu", 20)
+			elseif (IsNearPoints(informateur_meth, 3) == true) then
+				TriggerEvent("vmenu:openMenu", 21)
+			elseif (IsNearPoints(informateur_organe, 3) == true) then
+				TriggerEvent("vmenu:openMenu", 22)
 			elseif (IsNearPoints(changeYourJob, 3) == true) then
 				TriggerEvent("vmenu:openMenu", 15)
 			elseif (IsNearPoints(lavage_argent, 3) == true) then
@@ -1984,7 +2037,13 @@ Citizen.CreateThread(function()
 		elseif (IsNearPoints(Garage_helico_ambulance, 5) == true and User.job == 13) then
 			VMenu.garagehelicoambulance = false
 			VMenu.Info('Appuyer sur ~g~F6~s~ pour accéder au garage', false)
-		elseif (IsNearPoints(informateur, 3) == true) then
+		elseif (IsNearPoints(informateur_weed, 3) == true) then
+			VMenu.Info("Appuyer sur ~g~F6~s~ pour parler avec l'informateur", false)
+		elseif (IsNearPoints(informateur_coke, 3) == true) then
+			VMenu.Info("Appuyer sur ~g~F6~s~ pour parler avec l'informateur", false)
+		elseif (IsNearPoints(informateur_meth, 3) == true) then
+			VMenu.Info("Appuyer sur ~g~F6~s~ pour parler avec l'informateur", false)
+		elseif (IsNearPoints(informateur_organe, 3) == true) then
 			VMenu.Info("Appuyer sur ~g~F6~s~ pour parler avec l'informateur", false)
 		elseif (IsNearPoints(changeYourJob, 3) == true) then
 			VMenu.Info("Appuyer sur ~g~F6~s~ pour accéder au pole emploi", false)

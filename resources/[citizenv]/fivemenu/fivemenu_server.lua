@@ -66,6 +66,22 @@ AddEventHandler('vmenu:updateUser', function(openMenu)
 	TriggerClientEvent("vmenu:setUser", source, userInfos)
 end)
 
+RegisterServerEvent("vmenu:sync_s")
+AddEventHandler("vmenu:sync_s", function()
+	TriggerEvent('es:getPlayerFromId', source, function(user)
+		player = user.identifier
+		if (user) then
+				MySQL.Async.execute("UPDATE coordinates SET `x`=@valx,`y`=@valy,`z`=@valz WHERE identifier = @identifier",
+				{['@valx'] = user.coords.x, ['@valy'] = user.coords.y, ['@valz'] = user.coords.z, ['@identifier'] = player})
+				TriggerClientEvent("itinerance:notif", source, "~b~Position sauvegardée !")
+		else
+				MySQL.Async.execute("UPDATE coordinates SET `x`=@valx,`y`=@valy,`z`=@valz WHERE identifier = @identifier",
+				{['@valx'] = user.coords.x, ['@valy'] = user.coords.y, ['@valz'] = user.coords.z, ['@identifier'] = player})
+				TriggerClientEvent("itinerance:notif", source, "~b~Position sauvegardée !")
+		end
+	end)
+end)
+
 RegisterServerEvent('es:getVehPlate_s')
 AddEventHandler('es:getVehPlate_s', function()
 	TriggerEvent('es:getPlayerFromId', source, function(user)
@@ -89,7 +105,7 @@ AddEventHandler("vmenu:cleanCash_s", function()
 		if (user) then
 			local dcash = tonumber(user:getDMoney())
 			local cash = tonumber(user:getMoney())
-			local washedcash = dcash * 0.3
+			local washedcash = dcash * 0.7
 			user:setDMoney(0)
 			local total = cash + round(washedcash)
 			user:setMoney(total)

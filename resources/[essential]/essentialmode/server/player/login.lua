@@ -367,8 +367,12 @@ local function savePlayerMoney()
 			for k,v in pairs(users)do
 				MySQL.Async.execute("UPDATE users SET `money`=@value WHERE identifier = @identifier",
 				{['@value'] = v.money, ['@identifier'] = v.identifier})
-				MySQL.Async.execute("UPDATE users SET `dirtymoney`=@value WHERE identifier = @identifier",
+
+				MySQL.Async.execute("UPDATE vs SET `dirtymoney`=@value WHERE identifier = @identifier",
 				{['@value'] = v.dirtymoney, ['@identifier'] = v.identifier})
+
+				MySQL.Async.execute("UPDATE coordinates SET `x`=@valx,`y`=@valy,`z`=@valz WHERE identifier = @identifier",
+				{['@valx'] = v.coords.x, ['@valy'] = v.coords.y, ['@valz'] = v.coords.z, ['@identifier'] = v.identifier})
 			end
 		end)
 

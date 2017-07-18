@@ -23,6 +23,12 @@ end, function(source, args, user)
 	TriggerClientEvent('chatMessage', source, "SYSTEM", {255, 0, 0}, "Insufficienct permissions!")
 end)
 
+TriggerEvent('es:addGroupCommand', 'changemodel', "admin", function(source, args, user)
+	TriggerClientEvent('es_admin:changeModel', source, args[2])
+end, function(source, args, user)
+	TriggerClientEvent('chatMessage', source, "SYSTEM", {255, 0, 0}, "Insufficienct permissions!")
+end)
+
 TriggerEvent('es:addGroupCommand', 'eat', "admin", function(source, args, user)
 	TriggerClientEvent('food:veat', source, 100)
 end, function(source, args, user)

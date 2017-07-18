@@ -109,7 +109,7 @@
     </Item>	
 	
 	<Item>
-    <modelName>POLICE8</modelName>
+    <modelName>POLICE</modelName>
 	<colors>
         <Item>
           <indices content="char_array">

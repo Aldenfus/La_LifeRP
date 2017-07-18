@@ -9,7 +9,7 @@ local DrawBlipTradeShow = true
 -- -900.0, -3002.0, 13.0
 -- -800.0, -3002.0, 13.0
 -- -1078.0, -3002.0, 13.0
-local Price = 1500
+local Price = 25
 local random = 1
 local Blip
 local vehicle
@@ -87,7 +87,7 @@ Citizen.CreateThread(function()
   while true do
     Citizen.Wait(0)
     if DrawMarkerShow then
-      DrawMarker(1, morgue[1].x, morgue[1].y, morgue[1].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 75, 0, 0, 2, 0, 0, 0, 0)
+      --DrawMarker(1, morgue[1].x, morgue[1].y, morgue[1].z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 75, 0, 0, 2, 0, 0, 0, 0)
       -- DrawMarker(1, Position.traitement.x, Position.traitement.y, Position.traitement.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 25, 0, 0, 2, 0, 0, 0, 0)
       -- DrawMarker(1, Position.traitement2.x, Position.traitement2.y, Position.traitement2.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 25, 0, 0, 2, 0, 0, 0, 0)
       -- DrawMarker(1, Position.traitement3.x, Position.traitement3.y, Position.traitement3.z, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 4.0, 4.0, 1.0, 0, 0, 255, 25, 0, 0, 2, 0, 0, 0, 0)
