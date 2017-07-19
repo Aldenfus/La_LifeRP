@@ -13,11 +13,11 @@ local DrawBlipTradeShow = true
 local Price = 185
 local Position = {
     -- VOS POINTS ICI
-    Recolet={x=334.84967041016,y=-1083.2797851563,z=29.435209274292, distance=3},
-    traitement={x=1390.51037597656,y=3609.09399414063,z=38.9419288635254, distance=1},
-    traitement2={x=1389.52404785156,y=3604.15209960938,z=38.9419288635254, distance=1},
-    traitement3={x=1394.45300292969,y=3601.97973632813,z=38.94189453125, distance=1},
-    vente={x=1443.0411376953,y=6333.455078125,z=23.868028640747, distance=3},
+    Recolet={x=0.0,y=0.0,z=0.0, distance=3},
+    traitement={x=0.0,y=0.0,z=0.0, distance=1},
+    traitement2={x=0.0,y=0.0,z=0.0, distance=1},
+    traitement3={x=0.0,y=0.0,z=0.0, distance=1},
+    vente={x=0.0,y=0.0,z=0.0, distance=3},
 }
 
 function drawTxt(text,font,centre,x,y,scale,r,g,b,a)

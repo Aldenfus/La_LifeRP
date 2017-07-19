@@ -136,18 +136,18 @@ Log_company = {
 
 
 informateur_weed = {
-    {name="informateur", id=52, x=-1676.7319335938, y=-1095.0249023438, z=13.152258872986},
+    {name="informateur", id=52, x=0.0, y=0.0, z=0.0},
 }
 informateur_coke = {
-    {name="informateur", id=52, x=-2174.2702636719, y=4290.3041992188, z=49.044826507568},
+    {name="informateur", id=52, x=0.0, y=0.0, z=0.0},
 }
 informateur_meth = {
-    {name="informateur", id=52, x=-2155.86328125, y=237.72618103027, z=184.60147094727},
+    {name="informateur", id=52, x=0.0, y=0.0, z=0.0},
 }
 informateur_organe = {
-    {name="informateur", id=52, x=228.34046936035, y=-1368.7159423828, z=39.534378051758},
+    {name="informateur", id=52, x=0.0, y=0.0, z=0.0},
 }
 
 lavage_argent = {
-  {name="Lave le cash", x = -1094.2738037109, y = -1139.6273193359, z = 9.7240724563599},
+  {name="Lave le cash", x = 0.0, y = 0.0, z = 0.0},
 }
