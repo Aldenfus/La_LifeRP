@@ -1,7 +1,22 @@
+/*
+Navicat MySQL Data Transfer
+
+Source Server         : LA_Life
+Source Server Version : 50718
+Source Host           : localhost:3306
+Source Database       : gta5_gamemode_essential
+
+Target Server Type    : MYSQL
+Target Server Version : 50718
+File Encoding         : 65001
+
+Date: 2017-07-17 07:03:52
+*/
+
 SET FOREIGN_KEY_CHECKS=0;
 
 -- ----------------------------
--- Table structure for bans
+-- Table structure for `bans`
 -- ----------------------------
 DROP TABLE IF EXISTS `bans`;
 CREATE TABLE `bans` (
@@ -19,7 +34,7 @@ CREATE TABLE `bans` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for coordinates
+-- Table structure for `coordinates`
 -- ----------------------------
 DROP TABLE IF EXISTS `coordinates`;
 CREATE TABLE `coordinates` (
@@ -34,8 +49,9 @@ CREATE TABLE `coordinates` (
 -- Records of coordinates
 -- ----------------------------
 
+
 -- ----------------------------
--- Table structure for items
+-- Table structure for `items`
 -- ----------------------------
 DROP TABLE IF EXISTS `items`;
 CREATE TABLE `items` (
@@ -44,7 +60,7 @@ CREATE TABLE `items` (
   `value` int(11) NOT NULL DEFAULT '0',
   `type` int(11) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of items
@@ -78,7 +94,7 @@ INSERT INTO `items` VALUES ('26', 'Corps', '0', '0');
 INSERT INTO `items` VALUES ('27', 'Corps traité', '0', '0');
 
 -- ----------------------------
--- Table structure for jobs
+-- Table structure for `jobs`
 -- ----------------------------
 DROP TABLE IF EXISTS `jobs`;
 CREATE TABLE `jobs` (
@@ -86,7 +102,7 @@ CREATE TABLE `jobs` (
   `job_name` varchar(40) CHARACTER SET utf8mb4 NOT NULL,
   `salary` int(11) NOT NULL DEFAULT '500',
   PRIMARY KEY (`job_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of jobs
@@ -95,7 +111,7 @@ INSERT INTO `jobs` VALUES ('1', 'Sans Emploi', '0');
 INSERT INTO `jobs` VALUES ('2', 'Nettoyeur de piscine', '0');
 INSERT INTO `jobs` VALUES ('3', 'Éboueur', '0');
 INSERT INTO `jobs` VALUES ('4', 'Mineur', '0');
-INSERT INTO `jobs` VALUES ('5', 'Chauffeur de taxi', '500');
+INSERT INTO `jobs` VALUES ('5', 'Chauffeur de taxi', '50');
 INSERT INTO `jobs` VALUES ('6', 'Livreur de bois', '0');
 INSERT INTO `jobs` VALUES ('7', 'Livreur de citerne', '0');
 INSERT INTO `jobs` VALUES ('8', 'Livreur de conteneur', '0');
@@ -103,10 +119,11 @@ INSERT INTO `jobs` VALUES ('9', 'Livreur de médicament', '0');
 INSERT INTO `jobs` VALUES ('10', 'Policier', '0');
 INSERT INTO `jobs` VALUES ('11', 'Fossoyeur', '0');
 INSERT INTO `jobs` VALUES ('12', 'Préposé à la morgue', '0');
-INSERT INTO `jobs` VALUES ('13', 'Ambulancier', '500');
+INSERT INTO `jobs` VALUES ('13', 'Ambulancier', '50');
+INSERT INTO `jobs` VALUES ('14', 'Gouverneur', '50');
 
 -- ----------------------------
--- Table structure for outfits
+-- Table structure for `outfits`
 -- ----------------------------
 DROP TABLE IF EXISTS `outfits`;
 CREATE TABLE `outfits` (
@@ -137,7 +154,7 @@ CREATE TABLE `outfits` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for phonebook
+-- Table structure for `phonebook`
 -- ----------------------------
 DROP TABLE IF EXISTS `phonebook`;
 CREATE TABLE `phonebook` (
@@ -145,14 +162,49 @@ CREATE TABLE `phonebook` (
   `pidentifier` varchar(30) CHARACTER SET utf8mb4 DEFAULT '',
   `phonenumber` varchar(30) CHARACTER SET utf8mb4 DEFAULT '',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=296 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of phonebook
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for police
+-- Table structure for `phone_messages`
+-- ----------------------------
+DROP TABLE IF EXISTS `phone_messages`;
+CREATE TABLE `phone_messages` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `transmitter` varchar(10) NOT NULL,
+  `receiver` varchar(10) NOT NULL,
+  `message` varchar(255) NOT NULL DEFAULT '0',
+  `time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `isRead` int(11) NOT NULL DEFAULT '0',
+  `owner` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=3579 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of phone_messages
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `phone_users_contacts`
+-- ----------------------------
+DROP TABLE IF EXISTS `phone_users_contacts`;
+CREATE TABLE `phone_users_contacts` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `identifier` varchar(255) NOT NULL,
+  `number` varchar(10) NOT NULL,
+  `display` varchar(64) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=710 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of phone_users_contacts
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `police`
 -- ----------------------------
 DROP TABLE IF EXISTS `police`;
 CREATE TABLE `police` (
@@ -160,22 +212,21 @@ CREATE TABLE `police` (
   `police_name` varchar(40) CHARACTER SET utf8mb4 NOT NULL,
   `salary` int(11) NOT NULL DEFAULT '500',
   PRIMARY KEY (`police_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of police
 -- ----------------------------
-INSERT INTO `police` VALUES ('1', 'Cadet', '500');
-INSERT INTO `police` VALUES ('2', 'Brigadier', '500');
-INSERT INTO `police` VALUES ('3', 'Sergent', '500');
-INSERT INTO `police` VALUES ('4', 'Lieutenant', '500');
-INSERT INTO `police` VALUES ('5', 'Capitaine', '500');
-INSERT INTO `police` VALUES ('6', 'Commandant', '500');
-INSERT INTO `police` VALUES ('7', 'Colonel', '500');
-INSERT INTO `police` VALUES ('8', 'Rien', '0');
+INSERT INTO `police` VALUES ('1', 'Cadet', '20');
+INSERT INTO `police` VALUES ('2', 'Officier', '40');
+INSERT INTO `police` VALUES ('3', 'Sergent', '50');
+INSERT INTO `police` VALUES ('4', 'Lieutenant', '100');
+INSERT INTO `police` VALUES ('5', 'Capitaine', '150');
+INSERT INTO `police` VALUES ('6', 'Commandant', '200');
+INSERT INTO `police` VALUES ('7', 'Rien', '0');
 
 -- ----------------------------
--- Table structure for users
+-- Table structure for `users`
 -- ----------------------------
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE `users` (
@@ -193,15 +244,20 @@ CREATE TABLE `users` (
   `nom` varchar(30) CHARACTER SET utf8mb4 NOT NULL DEFAULT '',
   `prenom` varchar(30) CHARACTER SET utf8mb4 NOT NULL DEFAULT '',
   `telephone` varchar(30) CHARACTER SET utf8mb4 NOT NULL DEFAULT '',
+  `permis` int(11) DEFAULT '0',
+  `permisArme` int(11) DEFAULT '0',
+  `permisBateau` int(11) DEFAULT '0',
+  `permisPilote` int(11) DEFAULT '0',
+  `session_id` int(1) DEFAULT '0',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=82 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of users
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for user_inventory
+-- Table structure for `user_inventory`
 -- ----------------------------
 DROP TABLE IF EXISTS `user_inventory`;
 CREATE TABLE `user_inventory` (
@@ -218,7 +274,7 @@ CREATE TABLE `user_inventory` (
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for user_vehicle
+-- Table structure for `user_vehicle`
 -- ----------------------------
 DROP TABLE IF EXISTS `user_vehicle`;
 CREATE TABLE `user_vehicle` (
@@ -234,14 +290,14 @@ CREATE TABLE `user_vehicle` (
   `vehicle_pearlescentcolor` varchar(60) CHARACTER SET utf8mb4 NOT NULL,
   `vehicle_wheelcolor` varchar(60) CHARACTER SET utf8mb4 NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=211 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user_vehicle
 -- ----------------------------
 
 -- ----------------------------
--- Table structure for user_weapons
+-- Table structure for `user_weapons`
 -- ----------------------------
 DROP TABLE IF EXISTS `user_weapons`;
 CREATE TABLE `user_weapons` (
@@ -250,7 +306,7 @@ CREATE TABLE `user_weapons` (
   `weapon_model` varchar(60) CHARACTER SET utf8mb4 NOT NULL,
   `withdraw_cost` int(10) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=184 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of user_weapons
