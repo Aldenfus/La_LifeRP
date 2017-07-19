@@ -31,10 +31,20 @@ AutoStartResources:
     - Sheriff
     - LSPD
     - Wrapper
-    - motd
+    #- motd
     - ccreation
     - carwash
+    - afkkick
     - emergency
+    - heli
+    - Skin
+    - antigang
+    - carwash
+    - notif
+    - scoreboard
+    - Vehcontrol
+    - gcphone
+    - session_id
     - es_afterStart
     #GARDER ES_AFTERSTART DERNIER MERCI LEL
 
